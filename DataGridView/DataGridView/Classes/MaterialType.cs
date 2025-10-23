@@ -1,30 +1,33 @@
 ﻿namespace DataGridView.Classes
 {
-    public enum MaterialType : byte
+    /// <summary>
+    /// Класс с типами материалов
+    /// </summary>
+    public enum MaterialType
     {
         /// <summary>
         /// Не выбрано
         /// </summary>
-        None = 0,
+        None,
 
         /// <summary>
         /// Медь
         /// </summary>
-        Copper = 1,
+        Copper,
 
         /// <summary>
         /// Сталь
         /// </summary>
-        Steel = 2,
+        Steel,
 
         /// <summary>
         /// Железо
         /// </summary>
-        Iron = 3,
+        Iron,
 
         /// <summary>
         /// Хром
         /// </summary>
-        Chrome = 4
+        Chrome
     }
 }
