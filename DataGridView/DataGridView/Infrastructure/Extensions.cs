@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DataGridView.Infrostructure
+
+namespace DataGridView.Infrastructure
 {
     /// <summary>
     /// Класс расширений для работы с привязкой данных и валидацией в Windows Forms
