@@ -5,11 +5,17 @@ using DataGridView.Models;
 
 namespace DataGridView.Forms
 {
+    /// <summary>
+    /// Форма для добавления или редактирования товара на складе
+    /// </summary>
     public partial class AddProductForm : Form
     {
         private readonly ProductModel targetProduct;
         private readonly ErrorProvider errorProvider = new ErrorProvider();
 
+        /// <summary>
+        /// Инициализирует новый экземпляр формы для добавления или редактирования товара
+        /// </summary>
         public AddProductForm(ProductModel? sourceProduct = null)
         {
             InitializeComponent();
@@ -29,12 +35,12 @@ namespace DataGridView.Forms
 
             comboBoxMaterial.DataSource = Enum.GetValues(typeof(MaterialType));
 
-            comboBoxMaterial.AddBinding(x => x.SelectedItem!, targetProduct, x => x.Material);
-            textBoxProductName.AddBinding(x => x.Text, targetProduct, x => x.ProductName);
-            textBoxProductSize.AddBinding(x => x.Text, targetProduct, x => x.Size);
-            numericUpDownQuantity.AddBinding(x => x.Value, targetProduct, x => x.Quantity);
-            numericUpDownMinQuantity.AddBinding(x => x.Value, targetProduct, x => x.MinimumQuantity);
-            numericUpDownPrice.AddBinding(x => x.Value, targetProduct, x => x.Price);
+            comboBoxMaterial.AddBinding(x => x.SelectedItem!, targetProduct, x => x.Material, errorProvider);
+            textBoxProductName.AddBinding(x => x.Text, targetProduct, x => x.ProductName, errorProvider);
+            textBoxProductSize.AddBinding(x => x.Text, targetProduct, x => x.Size, errorProvider);
+            numericUpDownQuantity.AddBinding(x => x.Value, targetProduct, x => x.Quantity, errorProvider);
+            numericUpDownMinQuantity.AddBinding(x => x.Value, targetProduct, x => x.MinimumQuantity, errorProvider);
+            numericUpDownPrice.AddBinding(x => x.Value, targetProduct, x => x.Price, errorProvider);
 
             ConfigureErrorProvider();
         }
@@ -55,8 +61,6 @@ namespace DataGridView.Forms
         /// </summary>
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            errorProvider.Clear();
-
             var context = new ValidationContext(targetProduct);
             var results = new List<ValidationResult>();
 
@@ -69,27 +73,6 @@ namespace DataGridView.Forms
             }
             else
             {
-                foreach (var validationResult in results)
-                {
-                    foreach (var memberName in validationResult.MemberNames)
-                    {
-                        Control? control = memberName switch
-                        {
-                            nameof(ProductModel.Material) => comboBoxMaterial,
-                            nameof(ProductModel.ProductName) => textBoxProductName,
-                            nameof(ProductModel.Size) => textBoxProductSize,
-                            nameof(ProductModel.Quantity) => numericUpDownQuantity,
-                            nameof(ProductModel.MinimumQuantity) => numericUpDownMinQuantity,
-                            nameof(ProductModel.Price) => numericUpDownPrice,
-                            _ => null
-                        };
-
-                        if (control != null)
-                        {
-                            errorProvider.SetError(control, validationResult.ErrorMessage);
-                        }
-                    }
-                }
                 MessageBox.Show("Пожалуйста, исправьте ошибки в форме перед сохранением.",
                "Ошибки валидации", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }

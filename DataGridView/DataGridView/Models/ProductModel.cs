@@ -62,13 +62,7 @@ namespace DataGridView.Models
         /// Общая сумма товара
         /// </summary>
         [Display(Name = "Общая сумма товара")]
-        public decimal TotalAmount
-        {
-            get
-            {
-                return Price * Quantity;
-            }
-        }
+        public decimal TotalAmount => Price * Quantity;
 
         /// <summary>
         /// Создает копию объекта ProductModel
