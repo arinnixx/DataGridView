@@ -82,8 +82,7 @@ namespace DataGridView.Forms
                     MaterialType.Copper => "Медь",
                     MaterialType.Steel => "Сталь",
                     MaterialType.Iron => "Железо",
-                    MaterialType.Chrome => "Хром",
-                    _ => "Не выбрано"
+                    MaterialType.Chrome => "Хром"
                 };
             }
             else if (col.DataPropertyName == nameof(ProductModel.Price) ||
