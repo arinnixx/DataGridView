@@ -3,11 +3,17 @@ using DataGridView.Models;
 
 namespace DataGridView.Forms
 {
+    /// <summary>
+    /// Главная форма приложения для управления складом гвоздей
+    /// </summary>
     public partial class MainForm : Form
     {
         private readonly List<ProductModel> items;
         private readonly BindingSource bindingSource = new();
 
+        /// <summary>
+        /// Инициализирует новый экземпляр главной формы приложения
+        /// </summary>
         public MainForm()
         {
             InitializeComponent();
