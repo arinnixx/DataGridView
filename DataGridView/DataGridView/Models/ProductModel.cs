@@ -34,6 +34,7 @@ namespace DataGridView.Models
         /// </summary>
         [Display(Name = "Материал")]
         [Required(ErrorMessage = "{0} обязателен для выбора")]
+        [Range(1, 4, ErrorMessage = "{0} должен быть выбран из списка")]
         public MaterialType Material { get; set; }
 
         /// <summary>
