@@ -6,6 +6,5 @@
         /// Ставка НДС
         /// </summary>
         public const decimal VatRate = 0.20m;
-
     }
 }

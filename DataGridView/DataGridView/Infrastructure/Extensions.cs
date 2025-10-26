@@ -86,7 +86,9 @@ namespace DataGridView.Infrastructure
 
             if (!isValid && results.Count > 0)
             {
-                errorProvider.SetError(control, results[0].ErrorMessage);
+                var propertyError = results.Where(x => x.MemberNames.Contains(sourcePropertyName));
+
+                errorProvider.SetError(control, propertyError.First().ErrorMessage);
             }
             else
             {

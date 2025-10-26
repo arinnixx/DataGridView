@@ -42,14 +42,10 @@ namespace DataGridView.Forms
             numericUpDownMinQuantity.AddBinding(x => x.Value, targetProduct, x => x.MinimumQuantity, errorProvider);
             numericUpDownPrice.AddBinding(x => x.Value, targetProduct, x => x.Price, errorProvider);
 
-            ConfigureErrorProvider();
-        }
-
-        private void ConfigureErrorProvider()
-        {
             errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
             errorProvider.ContainerControl = this;
         }
+
 
         /// <summary>
         /// Текущий товар
