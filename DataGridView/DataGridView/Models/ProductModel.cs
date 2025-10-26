@@ -57,11 +57,6 @@ namespace DataGridView.Models
         [Display(Name = "Цена (без НДС)")]
         [Range(1, double.MaxValue, ErrorMessage = "{0} должна быть больше {1}")]
         public decimal Price { get; set; }
-
-        /// <summary>
-        /// Общая сумма товара
-        /// </summary>
-       /// [Display(Name = "Общая сумма товара")]
        
 
         /// <summary>
