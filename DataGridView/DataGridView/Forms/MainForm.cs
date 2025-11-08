@@ -101,7 +101,7 @@ namespace DataGridView.Forms
             }
             else if (col == Amount)
             {
-                decimal totalAmount = product.Price * product.Quantity;
+                var totalAmount = product.Price * product.Quantity;
                 e.Value = totalAmount.ToString("C2");
                 e.FormattingApplied = true;
             }

@@ -1,5 +1,8 @@
 ﻿namespace DataGridView.Classes
 {
+    /// <summary>
+    /// Класс с константами
+    /// </summary>
     internal class WarehouseConstants
     {
         /// <summary>
