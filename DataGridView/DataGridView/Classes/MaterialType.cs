@@ -28,6 +28,6 @@
         /// <summary>
         /// Хром
         /// </summary>
-        Chrome
+        Chrome,
     }
 }

@@ -61,7 +61,7 @@ namespace DataGridView.Forms
             Quantity.DataPropertyName = nameof(ProductModel.Quantity);
             MinQuantity.DataPropertyName = nameof(ProductModel.MinimumQuantity);
             Price.DataPropertyName = nameof(ProductModel.Price);
-            Amount.DataPropertyName = nameof(ProductModel.TotalAmount);
+            Amount.DataPropertyName = "";
 
             dataGridView.AutoGenerateColumns = false;
             Material.DataSource = Enum.GetValues(typeof(MaterialType));
@@ -91,14 +91,19 @@ namespace DataGridView.Forms
                     MaterialType.Chrome => "Хром"
                 };
             }
-            else if (col.DataPropertyName == nameof(ProductModel.Price) ||
-                     col.DataPropertyName == nameof(ProductModel.TotalAmount))
+            else if (col.DataPropertyName == nameof(ProductModel.Price))
             {
                 if (e.Value is decimal value)
                 {
                     e.Value = value.ToString("C2");
                     e.FormattingApplied = true;
                 }
+            }
+            else if (col == Amount)
+            {
+                var totalAmount = product.Price * product.Quantity;
+                e.Value = totalAmount.ToString("C2");
+                e.FormattingApplied = true;
             }
         }
 
@@ -124,7 +129,7 @@ namespace DataGridView.Forms
         private void SetStatistic()
         {
             var totalProducts = items.Count;
-            var totalAmountWithoutVat = items.Sum(p => p.TotalAmount);
+            var totalAmountWithoutVat = items.Sum(p => p.Price * p.Quantity);
             var totalAmountWithVat = totalAmountWithoutVat * (1 + WarehouseConstants.VatRate);
 
             toolStripStatusLabelQuantity.Text = $"Товарных позиций: {totalProducts}";
