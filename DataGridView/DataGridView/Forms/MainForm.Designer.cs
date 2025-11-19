@@ -37,17 +37,17 @@
             toolStripStatusLabelQuantity = new ToolStripStatusLabel();
             toolStripStatusLabelAmount = new ToolStripStatusLabel();
             toolStripStatusLabelAmountVAT = new ToolStripStatusLabel();
-            dataGridView = new System.Windows.Forms.DataGridView();
+            dataGridViewProducts = new System.Windows.Forms.DataGridView();
             ProductName = new DataGridViewTextBoxColumn();
             ProductSize = new DataGridViewTextBoxColumn();
-            Material = new DataGridViewComboBoxColumn();
+            Material = new DataGridViewTextBoxColumn();
             Quantity = new DataGridViewTextBoxColumn();
             MinQuantity = new DataGridViewTextBoxColumn();
             Price = new DataGridViewTextBoxColumn();
             Amount = new DataGridViewTextBoxColumn();
             toolStrip.SuspendLayout();
             statusStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewProducts).BeginInit();
             SuspendLayout();
             // 
             // toolStrip
@@ -113,23 +113,25 @@
             toolStripStatusLabelAmountVAT.Name = "toolStripStatusLabelAmountVAT";
             toolStripStatusLabelAmountVAT.Size = new Size(0, 17);
             // 
-            // dataGridView
+            // dataGridViewProducts
             // 
-            dataGridView.AllowUserToAddRows = false;
-            dataGridView.AllowUserToDeleteRows = false;
-            dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView.Columns.AddRange(new DataGridViewColumn[] { ProductName, ProductSize, Material, Quantity, MinQuantity, Price, Amount });
-            dataGridView.Dock = DockStyle.Fill;
-            dataGridView.Location = new Point(0, 25);
-            dataGridView.Name = "dataGridView";
-            dataGridView.ReadOnly = true;
-            dataGridView.Size = new Size(910, 511);
-            dataGridView.TabIndex = 2;
-            dataGridView.CellFormatting += dataGridViewProducts_CellFormatting;
+            dataGridViewProducts.AllowUserToAddRows = false;
+            dataGridViewProducts.AllowUserToDeleteRows = false;
+            dataGridViewProducts.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewProducts.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewProducts.Columns.AddRange(new DataGridViewColumn[] { ProductName, ProductSize, Material, Quantity, MinQuantity, Price, Amount });
+            dataGridViewProducts.Dock = DockStyle.Fill;
+            dataGridViewProducts.Location = new Point(0, 25);
+            dataGridViewProducts.Name = "dataGridViewProducts";
+            dataGridViewProducts.ReadOnly = true;
+            dataGridViewProducts.Size = new Size(910, 511);
+            dataGridViewProducts.TabIndex = 2;
+            dataGridViewProducts.CellFormatting += dataGridViewProducts_CellFormatting;
             // 
             // ProductName
             // 
             ProductName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            ProductName.DataPropertyName = "ProductName";
             ProductName.HeaderText = "Наименование товара";
             ProductName.Name = "ProductName";
             ProductName.ReadOnly = true;
@@ -137,6 +139,7 @@
             // ProductSize
             // 
             ProductSize.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            ProductSize.DataPropertyName = "Size";
             ProductSize.HeaderText = "Размер";
             ProductSize.Name = "ProductSize";
             ProductSize.ReadOnly = true;
@@ -144,15 +147,16 @@
             // Material
             // 
             Material.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            Material.DataPropertyName = "Material";
             Material.HeaderText = "Материал";
             Material.Name = "Material";
             Material.ReadOnly = true;
             Material.Resizable = DataGridViewTriState.True;
-            Material.SortMode = DataGridViewColumnSortMode.Automatic;
             // 
             // Quantity
             // 
             Quantity.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            Quantity.DataPropertyName = "Quantity";
             Quantity.HeaderText = "Количество на складе";
             Quantity.Name = "Quantity";
             Quantity.ReadOnly = true;
@@ -160,6 +164,7 @@
             // MinQuantity
             // 
             MinQuantity.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            MinQuantity.DataPropertyName = "MinimumQuantity";
             MinQuantity.HeaderText = "Минимальный предел количества";
             MinQuantity.Name = "MinQuantity";
             MinQuantity.ReadOnly = true;
@@ -167,6 +172,7 @@
             // Price
             // 
             Price.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            Price.DataPropertyName = "Price";
             Price.HeaderText = "Цена (без НДС)";
             Price.Name = "Price";
             Price.ReadOnly = true;
@@ -183,18 +189,19 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(910, 558);
-            Controls.Add(dataGridView);
+            Controls.Add(dataGridViewProducts);
             Controls.Add(statusStrip);
             Controls.Add(toolStrip);
             Name = "MainForm";
             ShowIcon = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Автоматизация склада гвоздей";
+            Load += MainForm_Load;
             toolStrip.ResumeLayout(false);
             toolStrip.PerformLayout();
             statusStrip.ResumeLayout(false);
             statusStrip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewProducts).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -203,7 +210,7 @@
 
         private ToolStrip toolStrip;
         private StatusStrip statusStrip;
-        private System.Windows.Forms.DataGridView dataGridView;
+        private System.Windows.Forms.DataGridView dataGridViewProducts;
         private ToolStripButton toolStripButtonAdd;
         private ToolStripButton toolStripButtonEdit;
         private ToolStripButton toolStripButtonDelete;
@@ -212,7 +219,7 @@
         private ToolStripStatusLabel toolStripStatusLabelAmountVAT;
         private DataGridViewTextBoxColumn ProductName;
         private DataGridViewTextBoxColumn ProductSize;
-        private DataGridViewComboBoxColumn Material;
+        private DataGridViewTextBoxColumn Material;
         private DataGridViewTextBoxColumn Quantity;
         private DataGridViewTextBoxColumn MinQuantity;
         private DataGridViewTextBoxColumn Price;

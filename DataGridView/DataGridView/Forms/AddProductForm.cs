@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using DataGridView.Classes;
 using DataGridView.Infrastructure;
-using DataGridView.Models;
+using DataGridView.Entities.Models;
 
 namespace DataGridView.Forms
 {
@@ -22,15 +21,21 @@ namespace DataGridView.Forms
 
             if (sourceProduct != null)
             {
-                targetProduct = sourceProduct.Clone();
+                targetProduct = new ProductModel
+                {
+                    Id = sourceProduct.Id,
+                    ProductName = sourceProduct.ProductName,
+                    Size = sourceProduct.Size,
+                    Material = sourceProduct.Material,
+                    Quantity = sourceProduct.Quantity,
+                    MinimumQuantity = sourceProduct.MinimumQuantity,
+                    Price = sourceProduct.Price,
+                };
                 buttonSave.Text = "Сохранить";
-                Text = "Редактирование товара";
             }
             else
             {
                 targetProduct = new ProductModel();
-                buttonSave.Text = "Добавить";
-                Text = "Добавить товар";
             }
 
             comboBoxMaterial.DataSource = Enum.GetValues(typeof(MaterialType));

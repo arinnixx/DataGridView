@@ -1,4 +1,4 @@
-﻿namespace DataGridView.Classes
+﻿namespace DataGridView.Entities.Models
 {
     /// <summary>
     /// Класс с типами материалов
