@@ -9,9 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DataGridView.MemoryStorage" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DataGridView.EntityManager\DataGridView.EntityManager.csproj" />
     <ProjectReference Include="..\DataGridView.MemoryStorage.Contracts\DataGridView.MemoryStorage.Contracts.csproj" />
-    <ProjectReference Include="..\DataGridView.MemoryStorage\DataGridView.MemoryStorage.csproj" />
   </ItemGroup>
 
 </Project>
