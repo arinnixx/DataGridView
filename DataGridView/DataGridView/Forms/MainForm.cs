@@ -1,5 +1,7 @@
 ﻿using DataGridView.Entities.Models;
+using DataGridView.Constants;
 using DataGridView.MemoryStorage.Contracts;
+using DataGridView.MemoryStorage;
 
 namespace DataGridView.Forms
 {
@@ -8,7 +10,6 @@ namespace DataGridView.Forms
     /// </summary>
     public partial class MainForm : Form
     {
-        private readonly List<ProductModel> items;
         private readonly IStorage storage;
         private readonly BindingSource bindingSource = [];
 
@@ -17,44 +18,60 @@ namespace DataGridView.Forms
         /// </summary>
         public MainForm(IStorage storage)
         {
-            InitializeComponent();
             this.storage = storage;
+
+            InitializeComponent();
+
+            InitializeDataAsync().GetAwaiter().GetResult();
+
             dataGridViewProducts.AutoGenerateColumns = false;
+        }
 
-            items = new List<ProductModel>();
-
-            items.Add(new ProductModel
+        /// <summary>
+        /// Асинхронная инициализация начальных данных
+        /// </summary>
+        private async Task InitializeDataAsync()
+        {
+            var items = new List<ProductModel>
             {
-                Id = Guid.NewGuid(),
-                ProductName = "Гвоздь строительный",
-                Size = "100мм",
-                Material = MaterialType.Steel,
-                Quantity = 1000,
-                MinimumQuantity = 100,
-                Price = 2.50m
-            });
+                new ProductModel
+                {
+                    Id = Guid.NewGuid(),
+                    ProductName = "Гвоздь строительный",
+                    Size = "100мм",
+                    Material = MaterialType.Steel,
+                    Quantity = 1000,
+                    MinimumQuantity = 100,
+                    Price = 2.50m
+                },
 
-            items.Add(new ProductModel
-            {
-                Id = Guid.NewGuid(),
-                ProductName = "Гвоздь декоративный",
-                Size = "50мм",
-                Material = MaterialType.Copper,
-                Quantity = 500,
-                MinimumQuantity = 50,
-                Price = 5.75m
-            });
+                new ProductModel
+                {
+                    Id = Guid.NewGuid(),
+                    ProductName = "Гвоздь декоративный",
+                    Size = "50мм",
+                    Material = MaterialType.Copper,
+                    Quantity = 500,
+                    MinimumQuantity = 50,
+                    Price = 5.75m
+                },
 
-            items.Add(new ProductModel
+                new ProductModel
+                {
+                    Id = Guid.NewGuid(),
+                    ProductName = "Гвоздь кровельный",
+                    Size = "75мм",
+                    Material = MaterialType.Chrome,
+                    Quantity = 300,
+                    MinimumQuantity = 30,
+                    Price = 8.20m
+                },
+            };
+            foreach (var item in items)
             {
-                Id = Guid.NewGuid(),
-                ProductName = "Гвоздь кровельный",
-                Size = "75мм",
-                Material = MaterialType.Chrome,
-                Quantity = 300,
-                MinimumQuantity = 30,
-                Price = 8.20m
-            });
+                await storage.AddProduct(item, CancellationToken.None);
+            }
+
         }
 
         /// <summary>
@@ -109,10 +126,10 @@ namespace DataGridView.Forms
         /// </summary>
         private async Task SetStatistic()
         {
-            var statistics = await storage.GetStatistics(CancellationToken.None);
-            toolStripStatusLabelQuantity.Text = $"Товарных позиций: {statistics.totalProducts}";
-            toolStripStatusLabelAmount.Text = $"Общая сумма без НДС: {statistics.totalAmountWithoutVat:C2}";
-            toolStripStatusLabelAmountVAT.Text = $"Общая сумма с НДС: {statistics.totalAmountWithVat:C2}";
+            var statistics = await storage.GetStatistics(WarehouseConstants.VatRate, CancellationToken.None);
+            toolStripStatusLabelQuantity.Text = $"Товарных позиций: {statistics.TotalProducts}";
+            toolStripStatusLabelAmount.Text = $"Общая сумма без НДС: {statistics.TotalAmountWithoutVat:C2}";
+            toolStripStatusLabelAmountVAT.Text = $"Общая сумма с НДС: {statistics.TotalAmountWithVat:C2}";
         }
 
         /// <summary>

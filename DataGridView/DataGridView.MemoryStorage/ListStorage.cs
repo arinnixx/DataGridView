@@ -1,8 +1,7 @@
 ﻿using DataGridView.Entities.Models;
-using DataGridView.Entities.Contracts;
+using DataGridView.Constants;
 using DataGridView.EntityManager;
 using DataGridView.MemoryStorage.Contracts;
-using System.Threading.Tasks;
 
 namespace DataGridView.MemoryStorage
 {
@@ -18,7 +17,7 @@ namespace DataGridView.MemoryStorage
         /// </summary>
         public ListStorage()
         {
-            products = []; // Пустой список
+            products = []; 
         }
 
         /// <inheritdoc/>
@@ -74,14 +73,14 @@ namespace DataGridView.MemoryStorage
             return Task.FromResult(totalPrice);
         }
 
-        async Task<Statistics> IStorage.GetStatistics(CancellationToken cancellationToken)
+        async Task<Statistics> IStorage.GetStatistics(decimal vatRate, CancellationToken cancellationToken)
         {
             var products = await GetAllProducts();
             var statistics = new Statistics
             {
-                totalProducts = products.Count(),
-                totalAmountWithoutVat = products.Sum(p => p.Price * p.Quantity),
-                totalAmountWithVat = products.Sum(p => p.Price * WarehouseConstants.VatRate * p.Quantity)
+                TotalProducts = products.Count(),
+                TotalAmountWithoutVat = products.Sum(p => p.Price * p.Quantity),
+                TotalAmountWithVat = products.Sum(p => p.Price * WarehouseConstants.VatRate * p.Quantity)
             };
             return statistics;
         }

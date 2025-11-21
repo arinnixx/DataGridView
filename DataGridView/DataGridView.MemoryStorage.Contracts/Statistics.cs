@@ -8,16 +8,16 @@
         /// <summary>
         /// Всего товаров на складе
         /// </summary>
-        public int totalProducts { get; set; }
+        public int TotalProducts { get; set; }
 
         /// <summary>
         /// Общая сумма без НДС
         /// </summary>
-        public decimal totalAmountWithoutVat { get; set; }
+        public decimal TotalAmountWithoutVat { get; set; }
 
         /// <summary>
         /// Общая сумма с НДС
         /// </summary>
-        public decimal totalAmountWithVat { get; set; }
+        public decimal TotalAmountWithVat { get; set; }
     }
 }

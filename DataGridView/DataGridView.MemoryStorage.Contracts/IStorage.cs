@@ -36,7 +36,7 @@ namespace DataGridView.MemoryStorage.Contracts
         /// <summary>
         /// Получить статистику по продуктам на складе
         /// </summary>
-        public Task<Statistics> GetStatistics(CancellationToken cancellationToken);
+        public Task<Statistics> GetStatistics(decimal vatRate, CancellationToken cancellationToken);
 
     }
 }
