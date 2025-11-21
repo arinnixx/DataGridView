@@ -8,4 +8,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="DataGridView.MemoryStorage" Version="1.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataGridView.Entities.Contracts\DataGridView.Constants.csproj" />
+    <ProjectReference Include="..\DataGridView.MemoryStorage.Contracts\DataGridView.MemoryStorage.Contracts.csproj" />
+  </ItemGroup>
+
 </Project>

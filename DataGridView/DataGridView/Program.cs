@@ -1,4 +1,6 @@
 using DataGridView.Forms;
+using DataGridView.MemoryStorage.Contracts;
+using DataGridView.MemoryStorage;
 
 namespace DataGridView
 {
@@ -13,7 +15,8 @@ namespace DataGridView
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new MainForm());
+            IStorage storage = new ListStorage();
+            Application.Run(new MainForm(storage));
         }
     }
 }

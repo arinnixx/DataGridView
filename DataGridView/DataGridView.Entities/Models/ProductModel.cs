@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using DataGridView.Classes;
 
-namespace DataGridView.Models
+namespace DataGridView.Entities.Models
 {
     /// <summary>
-    /// Модель товара (гвозди)
+    /// Модель товара
     /// </summary>
     public class ProductModel
     {
@@ -57,23 +56,5 @@ namespace DataGridView.Models
         [Display(Name = "Цена (без НДС)")]
         [Range(1, double.MaxValue, ErrorMessage = "{0} должна быть больше {1}")]
         public decimal Price { get; set; }
-       
-
-        /// <summary>
-        /// Создает копию объекта ProductModel
-        /// </summary>
-        public ProductModel Clone()
-        {
-            return new ProductModel
-            {
-                Id = this.Id,
-                ProductName = this.ProductName,
-                Size = this.Size,
-                Material = this.Material,
-                Quantity = this.Quantity,
-                MinimumQuantity = this.MinimumQuantity,
-                Price = this.Price
-            };
-        }
     }
 }

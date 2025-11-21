@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+ <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<Authors>TyrtyshnayaArina</Authors>
+	<Product>DataGridView</Product>
+	<Description>DataGridView.MemoryStorage Тыртышная Арина ИП-22-3</Description>
+	<Version>1.0.4</Version>
+	<PackageTags>Storage; ListStorage; MemoryStorage</PackageTags>
+	<PackageIcon>icon.png</PackageIcon>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageLicenseFile>LICENSE</PackageLicenseFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataGridView.Entities.Contracts\DataGridView.Constants.csproj" />
+    <ProjectReference Include="..\DataGridView.MemoryStorage.Contracts\DataGridView.MemoryStorage.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<None Update="icon.png">
+		<Pack>True</Pack>
+		<PackagePath>\</PackagePath>
+	</None>
+	<None Update="README.md">
+		<Pack>True</Pack>
+		<PackagePath>\</PackagePath>
+	</None>
+	<None Update="LICENSE">
+		<Pack>True</Pack>
+		<PackagePath>\</PackagePath>
+	</None>
+  </ItemGroup>
+
+
+</Project>
