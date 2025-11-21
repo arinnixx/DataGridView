@@ -1,6 +1,6 @@
 ﻿using DataGridView.Entities.Models;
+using DataGridView.Entities.Contracts;
 using DataGridView.EntityManager;
-using DataGridView.Constants;
 using DataGridView.MemoryStorage.Contracts;
 
 namespace DataGridView.MemoryStorage
