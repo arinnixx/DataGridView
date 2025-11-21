@@ -2,6 +2,7 @@
 using DataGridView.Entities.Contracts;
 using DataGridView.EntityManager;
 using DataGridView.MemoryStorage.Contracts;
+using System.Threading.Tasks;
 
 namespace DataGridView.MemoryStorage
 {
@@ -17,58 +18,27 @@ namespace DataGridView.MemoryStorage
         /// </summary>
         public ListStorage()
         {
-            products =
-            [
-                new ProductModel
-                {
-                
-                ProductName = "Гвоздь строительный",
-                Size = "100мм",
-                Material = MaterialType.Steel,
-                Quantity = 1000,
-                MinimumQuantity = 100,
-                Price = 2.50m
-                },
-
-                new ProductModel
-                {
-                
-                ProductName = "Гвоздь декоративный",
-                Size = "50мм",
-                Material = MaterialType.Copper,
-                Quantity = 500,
-                MinimumQuantity = 50,
-                Price = 5.75m
-                },
-
-                new ProductModel
-                {
-                
-                ProductName = "Гвоздь кровельный",
-                Size = "75мм",
-                Material = MaterialType.Chrome,
-                Quantity = 300,
-                MinimumQuantity = 30,
-                Price = 8.20m
-                }
-            ];
+            products = []; // Пустой список
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<ProductModel>> GetAllProducts() => await Task.FromResult<IEnumerable<ProductModel>>(products);
-
-        async Task IStorage.AddProduct(ProductModel product)
+        public Task<IEnumerable<ProductModel>> GetAllProducts()
         {
-            products.Add(product);
-            await Task.CompletedTask;
+            return Task.FromResult<IEnumerable<ProductModel>>(products);
         }
 
-        async Task IStorage.UpdateProduct(ProductModel product)
+        Task IStorage.AddProduct(ProductModel product, CancellationToken cancellationToken)
+        {
+            products.Add(product);
+            return Task.CompletedTask;
+        }
+
+        Task IStorage.UpdateProduct(ProductModel product, CancellationToken cancellationToken)
         {
             var existingProduct = products.FirstOrDefault(p => p.Id == product.Id);
             if (existingProduct == null)
             {
-                return;
+                return Task.CompletedTask;
             }
 
             existingProduct.ProductName = product.ProductName;
@@ -78,35 +48,33 @@ namespace DataGridView.MemoryStorage
             existingProduct.MinimumQuantity = product.MinimumQuantity;
             existingProduct.Price = product.Price;
 
-            await Task.CompletedTask;
+            return Task.CompletedTask;
         }
 
-        async Task IStorage.DeleteProduct(Guid id)
+        Task IStorage.DeleteProduct(Guid id, CancellationToken cancellationToken)
         {
             var existingProduct = products.FirstOrDefault(p => p.Id == id);
             if (existingProduct == null)
             {
-                return;
+                return Task.CompletedTask;
             }
             products.Remove(existingProduct);
 
-            await Task.CompletedTask;
+            return Task.CompletedTask;
         }
 
-        async Task<ProductModel?> IStorage.GetProductById(Guid id) => await Task.FromResult(products.FirstOrDefault(p => p.Id == id));
-
-        async Task<decimal> IStorage.GetProductTotalPriceWithoutTax(Guid id)
+        Task<decimal> IStorage.GetProductTotalPriceWithoutTax(Guid id, CancellationToken cancellationToken)
         {
             var product = products.FirstOrDefault(p => p.Id == id);
             if (product == null)
             {
-                return 0;
+                return Task.FromResult(0m);
             }
             var totalPrice = product.Price * product.Quantity;
-            return await Task.FromResult(totalPrice);
+            return Task.FromResult(totalPrice);
         }
 
-        async Task<Statistics> IStorage.GetStatistics()
+        async Task<Statistics> IStorage.GetStatistics(CancellationToken cancellationToken)
         {
             var products = await GetAllProducts();
             var statistics = new Statistics

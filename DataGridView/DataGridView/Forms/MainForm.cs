@@ -8,6 +8,7 @@ namespace DataGridView.Forms
     /// </summary>
     public partial class MainForm : Form
     {
+        private readonly List<ProductModel> items;
         private readonly IStorage storage;
         private readonly BindingSource bindingSource = [];
 
@@ -19,6 +20,41 @@ namespace DataGridView.Forms
             InitializeComponent();
             this.storage = storage;
             dataGridViewProducts.AutoGenerateColumns = false;
+
+            items = new List<ProductModel>();
+
+            items.Add(new ProductModel
+            {
+                Id = Guid.NewGuid(),
+                ProductName = "Гвоздь строительный",
+                Size = "100мм",
+                Material = MaterialType.Steel,
+                Quantity = 1000,
+                MinimumQuantity = 100,
+                Price = 2.50m
+            });
+
+            items.Add(new ProductModel
+            {
+                Id = Guid.NewGuid(),
+                ProductName = "Гвоздь декоративный",
+                Size = "50мм",
+                Material = MaterialType.Copper,
+                Quantity = 500,
+                MinimumQuantity = 50,
+                Price = 5.75m
+            });
+
+            items.Add(new ProductModel
+            {
+                Id = Guid.NewGuid(),
+                ProductName = "Гвоздь кровельный",
+                Size = "75мм",
+                Material = MaterialType.Chrome,
+                Quantity = 300,
+                MinimumQuantity = 30,
+                Price = 8.20m
+            });
         }
 
         /// <summary>
@@ -48,7 +84,7 @@ namespace DataGridView.Forms
             }
             if (col == Amount)
             {
-                var totalAmount = await storage.GetProductTotalPriceWithoutTax(product.Id);
+                var totalAmount = await storage.GetProductTotalPriceWithoutTax(product.Id, CancellationToken.None);
                 e.Value = totalAmount.ToString("C2");
 
             }
@@ -63,7 +99,7 @@ namespace DataGridView.Forms
 
             if (addForm.ShowDialog(this) == DialogResult.OK)
             {
-                await storage.AddProduct(addForm.CurrentProduct);
+                await storage.AddProduct(addForm.CurrentProduct, CancellationToken.None);
                 await OnUpdate();
             }
         }
@@ -73,7 +109,7 @@ namespace DataGridView.Forms
         /// </summary>
         private async Task SetStatistic()
         {
-            var statistics = await storage.GetStatistics();
+            var statistics = await storage.GetStatistics(CancellationToken.None);
             toolStripStatusLabelQuantity.Text = $"Товарных позиций: {statistics.totalProducts}";
             toolStripStatusLabelAmount.Text = $"Общая сумма без НДС: {statistics.totalAmountWithoutVat:C2}";
             toolStripStatusLabelAmountVAT.Text = $"Общая сумма с НДС: {statistics.totalAmountWithVat:C2}";
@@ -94,7 +130,7 @@ namespace DataGridView.Forms
             var editForm = new AddProductForm(selectedProduct);
             if (editForm.ShowDialog() == DialogResult.OK)
             {
-                await storage.UpdateProduct(editForm.CurrentProduct);
+                await storage.UpdateProduct(editForm.CurrentProduct, CancellationToken.None);
                 await OnUpdate();
             }
         }
@@ -116,7 +152,7 @@ namespace DataGridView.Forms
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                await storage.DeleteProduct(product.Id);
+                await storage.DeleteProduct(product.Id, CancellationToken.None);
                 await OnUpdate();
             }
         }

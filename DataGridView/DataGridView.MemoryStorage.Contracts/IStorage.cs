@@ -16,32 +16,27 @@ namespace DataGridView.MemoryStorage.Contracts
         /// <summary>
         /// Добавить новый товар
         /// </summary>
-        public Task AddProduct(ProductModel product);
+        public Task AddProduct(ProductModel product, CancellationToken cancellationToken);
 
         /// <summary>
         /// Обновить товар
         /// </summary>
-        public Task UpdateProduct(ProductModel product);
+        public Task UpdateProduct(ProductModel product, CancellationToken cancellationToken);
 
         /// <summary>
         /// Удалить товар по ID
         /// </summary>
-        public Task DeleteProduct(Guid id);
-
-        /// <summary>
-        /// Найти товар по ID
-        /// </summary>
-        public Task<ProductModel?> GetProductById(Guid id);
+        public Task DeleteProduct(Guid id, CancellationToken cancellationToken);
 
         /// <summary>
         /// Получить общую стоимость товара БЕЗ НДС (Цена * Количество)
         /// </summary>
-        public Task<decimal> GetProductTotalPriceWithoutTax(Guid id);
+        public Task<decimal> GetProductTotalPriceWithoutTax(Guid id, CancellationToken cancellationToken);
 
         /// <summary>
         /// Получить статистику по продуктам на складе
         /// </summary>
-        public Task<Statistics> GetStatistics();
+        public Task<Statistics> GetStatistics(CancellationToken cancellationToken);
 
     }
 }
