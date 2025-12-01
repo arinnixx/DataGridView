@@ -45,9 +45,5 @@ namespace DataGridView.Services
             var totalPrice = product.Price * product.Quantity;
             return Task.FromResult(totalPrice);
         }
-
-
-
-
     }
 }
