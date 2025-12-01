@@ -1,5 +1,4 @@
-﻿using DataGridView.MemoryStorage.Contracts;
-using DataGridView.Entities.Models;
+﻿using DataGridView.Entities.Models;
 
 namespace DataGridView.MemoryStorage.Contracts
 {
