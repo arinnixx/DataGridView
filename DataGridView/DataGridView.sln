@@ -1,9 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGridView", "DataGridView\DataGridView.csproj", "{C5872628-C1CE-4481-BDA5-DC7B5187106A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL", "DAL", "{2A0DD171-D73C-4AEC-97D9-48A581DD649A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BL", "BL", "{DC4FC52F-57A4-44D3-9623-EB3086150A07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGridView.Entities", "DataGridView.Entities\DataGridView.Entities.csproj", "{BF98F07A-F1C2-4264-86D5-0AAD45A23BB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGridView.MemoryStorage.Contracts", "DataGridView.MemoryStorage.Contracts\DataGridView.MemoryStorage.Contracts.csproj", "{1FA32F04-27E4-4A1E-8F2F-4435C7072B40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGridView.Constants", "DataGridView.Entities.Contracts\DataGridView.Constants.csproj", "{DD7DADFE-8628-4BA1-815F-3550C51A6E1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGridView.MemoryStorage", "DataGridView.MemoryStorage\DataGridView.MemoryStorage.csproj", "{E23DCA63-0C4F-4963-AFEE-C15CB022E363}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +27,29 @@ Global
 		{C5872628-C1CE-4481-BDA5-DC7B5187106A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5872628-C1CE-4481-BDA5-DC7B5187106A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5872628-C1CE-4481-BDA5-DC7B5187106A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF98F07A-F1C2-4264-86D5-0AAD45A23BB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF98F07A-F1C2-4264-86D5-0AAD45A23BB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF98F07A-F1C2-4264-86D5-0AAD45A23BB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF98F07A-F1C2-4264-86D5-0AAD45A23BB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FA32F04-27E4-4A1E-8F2F-4435C7072B40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FA32F04-27E4-4A1E-8F2F-4435C7072B40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FA32F04-27E4-4A1E-8F2F-4435C7072B40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FA32F04-27E4-4A1E-8F2F-4435C7072B40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD7DADFE-8628-4BA1-815F-3550C51A6E1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD7DADFE-8628-4BA1-815F-3550C51A6E1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD7DADFE-8628-4BA1-815F-3550C51A6E1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD7DADFE-8628-4BA1-815F-3550C51A6E1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E23DCA63-0C4F-4963-AFEE-C15CB022E363}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E23DCA63-0C4F-4963-AFEE-C15CB022E363}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E23DCA63-0C4F-4963-AFEE-C15CB022E363}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E23DCA63-0C4F-4963-AFEE-C15CB022E363}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BF98F07A-F1C2-4264-86D5-0AAD45A23BB8} = {2A0DD171-D73C-4AEC-97D9-48A581DD649A}
+		{1FA32F04-27E4-4A1E-8F2F-4435C7072B40} = {DC4FC52F-57A4-44D3-9623-EB3086150A07}
+		{DD7DADFE-8628-4BA1-815F-3550C51A6E1A} = {2A0DD171-D73C-4AEC-97D9-48A581DD649A}
 	EndGlobalSection
 EndGlobal

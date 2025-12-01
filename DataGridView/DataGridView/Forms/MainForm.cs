@@ -1,5 +1,7 @@
-﻿using DataGridView.Classes;
-using DataGridView.Models;
+﻿using DataGridView.Entities.Models;
+using DataGridView.Constants;
+using DataGridView.MemoryStorage.Contracts;
+using DataGridView.MemoryStorage;
 
 namespace DataGridView.Forms
 {
@@ -8,197 +10,192 @@ namespace DataGridView.Forms
     /// </summary>
     public partial class MainForm : Form
     {
-        private readonly List<ProductModel> items;
-        private readonly BindingSource bindingSource = new();
+        private readonly IStorage storage;
+        private readonly BindingSource bindingSource = [];
 
         /// <summary>
         /// Инициализирует новый экземпляр главной формы приложения
         /// </summary>
-        public MainForm()
+        public MainForm(IStorage storage)
         {
+            this.storage = storage;
+
             InitializeComponent();
 
-            items = new List<ProductModel>();
+            InitializeDataAsync().GetAwaiter().GetResult();
 
-            items.Add(new ProductModel
+            dataGridViewProducts.AutoGenerateColumns = false;
+        }
+
+        /// <summary>
+        /// Асинхронная инициализация начальных данных
+        /// </summary>
+        private async Task InitializeDataAsync()
+        {
+            var items = new List<ProductModel>
             {
-                Id = Guid.NewGuid(),
-                ProductName = "Гвоздь строительный",
-                Size = "100мм",
-                Material = MaterialType.Steel,
-                Quantity = 1000,
-                MinimumQuantity = 100,
-                Price = 2.50m
-            });
+                new ProductModel
+                {
+                    Id = Guid.NewGuid(),
+                    ProductName = "Гвоздь строительный",
+                    Size = "100мм",
+                    Material = MaterialType.Steel,
+                    Quantity = 1000,
+                    MinimumQuantity = 100,
+                    Price = 2.50m
+                },
 
-            items.Add(new ProductModel
+                new ProductModel
+                {
+                    Id = Guid.NewGuid(),
+                    ProductName = "Гвоздь декоративный",
+                    Size = "50мм",
+                    Material = MaterialType.Copper,
+                    Quantity = 500,
+                    MinimumQuantity = 50,
+                    Price = 5.75m
+                },
+
+                new ProductModel
+                {
+                    Id = Guid.NewGuid(),
+                    ProductName = "Гвоздь кровельный",
+                    Size = "75мм",
+                    Material = MaterialType.Chrome,
+                    Quantity = 300,
+                    MinimumQuantity = 30,
+                    Price = 8.20m
+                },
+            };
+            foreach (var item in items)
             {
-                Id = Guid.NewGuid(),
-                ProductName = "Гвоздь декоративный",
-                Size = "50мм",
-                Material = MaterialType.Copper,
-                Quantity = 500,
-                MinimumQuantity = 50,
-                Price = 5.75m
-            });
+                await storage.AddProduct(item, CancellationToken.None);
+            }
 
-            items.Add(new ProductModel
-            {
-                Id = Guid.NewGuid(),
-                ProductName = "Гвоздь кровельный",
-                Size = "75мм",
-                Material = MaterialType.Chrome,
-                Quantity = 300,
-                MinimumQuantity = 30,
-                Price = 8.20m
-            });
-
-            SetStatistic();
-
-            ProductName.DataPropertyName = nameof(ProductModel.ProductName);
-            ProductSize.DataPropertyName = nameof(ProductModel.Size);
-            Material.DataPropertyName = nameof(ProductModel.Material);
-            Quantity.DataPropertyName = nameof(ProductModel.Quantity);
-            MinQuantity.DataPropertyName = nameof(ProductModel.MinimumQuantity);
-            Price.DataPropertyName = nameof(ProductModel.Price);
-            Amount.DataPropertyName = "";
-
-            dataGridView.AutoGenerateColumns = false;
-            Material.DataSource = Enum.GetValues(typeof(MaterialType));
-
-            bindingSource.DataSource = items;
-            dataGridView.DataSource = bindingSource;
         }
 
         /// <summary>
         /// Обработчик события форматирования ячеек DataGridView
         /// </summary>
-        private void dataGridViewProducts_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private async void dataGridViewProducts_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            var col = dataGridView.Columns[e.ColumnIndex];
-            var product = (ProductModel)dataGridView.Rows[e.RowIndex].DataBoundItem;
+            var col = dataGridViewProducts.Columns[e.ColumnIndex];
+            var product = (ProductModel)dataGridViewProducts.Rows[e.RowIndex].DataBoundItem;
 
             if (product == null)
+            {
                 return;
+            }
+
 
             if (col.DataPropertyName == nameof(ProductModel.Material))
             {
                 e.Value = product.Material switch
                 {
-                    MaterialType.Copper => "Медь",
-                    MaterialType.Steel => "Сталь",
-                    MaterialType.Iron => "Железо",
-                    MaterialType.Chrome => "Хром"
+                    Entities.Models.MaterialType.Copper => "Медь",
+                    Entities.Models.MaterialType.Steel => "Сталь",
+                    Entities.Models.MaterialType.Iron => "Железо",
+                    Entities.Models.MaterialType.Chrome => "Хром",
+                    _ => string.Empty,
                 };
             }
-            else if (col.DataPropertyName == nameof(ProductModel.Price))
+            if (col == Amount)
             {
-                if (e.Value is decimal value)
-                {
-                    e.Value = value.ToString("C2");
-                    e.FormattingApplied = true;
-                }
-            }
-            else if (col == Amount)
-            {
-                var totalAmount = product.Price * product.Quantity;
+                var totalAmount = await storage.GetProductTotalPriceWithoutTax(product.Id, CancellationToken.None);
                 e.Value = totalAmount.ToString("C2");
-                e.FormattingApplied = true;
+
             }
         }
 
         /// <summary>
         /// Обработчик нажатия кнопки Добавить товар
         /// </summary>
-        private void toolStripButtonAdd_Click(object sender, EventArgs e)
+        private async void toolStripButtonAdd_Click(object sender, EventArgs e)
         {
             var addForm = new AddProductForm();
 
             if (addForm.ShowDialog(this) == DialogResult.OK)
             {
-                items.Add(addForm.CurrentProduct);
-                bindingSource.ResetBindings(false);
-                MessageBox.Show("Товар успешно добавлен!");
-                OnUpdate();
+                await storage.AddProduct(addForm.CurrentProduct, CancellationToken.None);
+                await OnUpdate();
             }
         }
 
         /// <summary>
         /// Метод обновления статистики
         /// </summary>
-        private void SetStatistic()
+        private async Task SetStatistic()
         {
-            var totalProducts = items.Count;
-            var totalAmountWithoutVat = items.Sum(p => p.Price * p.Quantity);
-            var totalAmountWithVat = totalAmountWithoutVat * (1 + WarehouseConstants.VatRate);
-
-            toolStripStatusLabelQuantity.Text = $"Товарных позиций: {totalProducts}";
-            toolStripStatusLabelAmount.Text = $"Общая сумма без НДС: {totalAmountWithoutVat:C2}";
-            toolStripStatusLabelAmountVAT.Text = $"Общая сумма с НДС: {totalAmountWithVat:C2}";
+            var statistics = await storage.GetStatistics(WarehouseConstants.VatRate, CancellationToken.None);
+            toolStripStatusLabelQuantity.Text = $"Товарных позиций: {statistics.TotalProducts}";
+            toolStripStatusLabelAmount.Text = $"Общая сумма без НДС: {statistics.TotalAmountWithoutVat:C2}";
+            toolStripStatusLabelAmountVAT.Text = $"Общая сумма с НДС: {statistics.TotalAmountWithVat:C2}";
         }
 
         /// <summary>
         /// Обработчик нажатия кнопки Редактировать товар
         /// </summary>
-        private void toolStripButtonEdit_Click(object sender, EventArgs e)
+        private async void toolStripButtonEdit_Click(object sender, EventArgs e)
         {
-            if (dataGridView.SelectedRows.Count == 0)
+            if (dataGridViewProducts.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Выберите товар для редактирования!", "Внимание",
-                MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            var selectedProduct = (ProductModel)dataGridView.SelectedRows[0].DataBoundItem;
-            var selectedIndex = items.IndexOf(selectedProduct);
+            var selectedProduct = (ProductModel)dataGridViewProducts.SelectedRows[0].DataBoundItem;
 
             var editForm = new AddProductForm(selectedProduct);
             if (editForm.ShowDialog() == DialogResult.OK)
             {
-                if (selectedIndex >= 0 && selectedIndex < items.Count)
-                {
-                    items[selectedIndex] = editForm.CurrentProduct;
-                    OnUpdate();
-                    MessageBox.Show("Товар успешно обновлен!", "Успех",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                await storage.UpdateProduct(editForm.CurrentProduct, CancellationToken.None);
+                await OnUpdate();
             }
         }
 
         /// <summary>
         /// Обработчик нажатия кнопки Удалить товар
         /// </summary>
-        private void toolStripButtonDelete_Click(object sender, EventArgs e)
+        private async void toolStripButtonDelete_Click(object sender, EventArgs e)
         {
-            if (dataGridView.SelectedRows.Count == 0)
+            if (dataGridViewProducts.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Выберите товар для удаления!", "Внимание",
-                MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            var product = (ProductModel)dataGridView.SelectedRows[0].DataBoundItem;
-            var target = items.FirstOrDefault(x => x.Id == product.Id);
+            var product = (ProductModel)dataGridViewProducts.SelectedRows[0].DataBoundItem;
 
-            if (target != null &&
-                MessageBox.Show($"Вы действительно желаете удалить товар '{target.ProductName}'?",
+            if (MessageBox.Show($"Вы действительно желаете удалить товар '{product.ProductName}'?",
                 "Удаление товара",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                items.Remove(target);
-                OnUpdate();
+                await storage.DeleteProduct(product.Id, CancellationToken.None);
+                await OnUpdate();
             }
         }
 
         /// <summary>
         /// Метод обновления всех данных на форме
         /// </summary>
-        public void OnUpdate()
+        public async Task OnUpdate()
         {
+            var products = await storage.GetAllProducts();
+            bindingSource.DataSource = products.ToList();
             bindingSource.ResetBindings(false);
-            dataGridView.Refresh();
-            SetStatistic();
+            await SetStatistic();
+        }
+
+        private async void MainForm_Load(object sender, EventArgs e)
+        {
+            await LoadData();
+        }
+
+        private async Task LoadData()
+        {
+            var products = await storage.GetAllProducts();
+            bindingSource.DataSource = products.ToList();
+            dataGridViewProducts.DataSource = bindingSource;
+            await SetStatistic();
         }
     }
 }
