@@ -15,6 +15,9 @@
   <ItemGroup>
     <ProjectReference Include="..\DataGridView.Entities.Contracts\DataGridView.Constants.csproj" />
     <ProjectReference Include="..\DataGridView.MemoryStorage.Contracts\DataGridView.MemoryStorage.Contracts.csproj" />
+    <ProjectReference Include="..\DataGridView.MemoryStorage\DataGridView.MemoryStorage.csproj" />
+    <ProjectReference Include="..\DataGridView.Services.Contracts\DataGridView.Services.Contracts.csproj" />
+    <ProjectReference Include="..\DataGridView.Services\DataGridView.Services.csproj" />
   </ItemGroup>
 
 </Project>

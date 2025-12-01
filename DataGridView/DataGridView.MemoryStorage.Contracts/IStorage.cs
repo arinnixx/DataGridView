@@ -1,10 +1,10 @@
-﻿using DataGridView.EntityManager;
+﻿using DataGridView.MemoryStorage.Contracts;
 using DataGridView.Entities.Models;
 
 namespace DataGridView.MemoryStorage.Contracts
 {
     /// <summary>
-    /// Методы для операций с хранилищем
+    /// Интерфейс хранилища
     /// </summary>
     public interface IStorage
     {
@@ -24,9 +24,9 @@ namespace DataGridView.MemoryStorage.Contracts
         public Task UpdateProduct(ProductModel product, CancellationToken cancellationToken);
 
         /// <summary>
-        /// Удалить товар по ID
+        /// Удалить товар
         /// </summary>
-        public Task DeleteProduct(Guid id, CancellationToken cancellationToken);
+        public Task DeleteProduct(ProductModel product, CancellationToken cancellationToken);
 
         /// <summary>
         /// Получить общую стоимость товара БЕЗ НДС (Цена * Количество)

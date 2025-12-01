@@ -1,6 +1,5 @@
 ﻿using DataGridView.Entities.Models;
 using DataGridView.Constants;
-using DataGridView.EntityManager;
 using DataGridView.MemoryStorage.Contracts;
 
 namespace DataGridView.MemoryStorage
@@ -50,15 +49,9 @@ namespace DataGridView.MemoryStorage
             return Task.CompletedTask;
         }
 
-        Task IStorage.DeleteProduct(Guid id, CancellationToken cancellationToken)
+        Task IStorage.DeleteProduct(ProductModel product, CancellationToken cancellationToken)
         {
-            var existingProduct = products.FirstOrDefault(p => p.Id == id);
-            if (existingProduct == null)
-            {
-                return Task.CompletedTask;
-            }
-            products.Remove(existingProduct);
-
+            products.Remove(product);
             return Task.CompletedTask;
         }
 
@@ -80,7 +73,7 @@ namespace DataGridView.MemoryStorage
             {
                 TotalProducts = products.Count(),
                 TotalAmountWithoutVat = products.Sum(p => p.Price * p.Quantity),
-                TotalAmountWithVat = products.Sum(p => p.Price * WarehouseConstants.VatRate * p.Quantity)
+                TotalAmountWithVat = products.Sum(p => p.Price * vatRate * p.Quantity)
             };
             return statistics;
         }
