@@ -9,7 +9,7 @@ using Moq;
 namespace DataGridView.Service.Tests
 {
     /// <summary>
-    /// Модульные тесты для проверки работы <see cref="WarehouseService"/>.
+    /// РњРѕРґСѓР»СЊРЅС‹Рµ С‚РµСЃС‚С‹ РґР»СЏ РїСЂРѕРІРµСЂРєРё СЂР°Р±РѕС‚С‹ <see cref="WarehouseService"/>.
     /// </summary>
     public class WarehouseServiceTests
     {
@@ -17,7 +17,7 @@ namespace DataGridView.Service.Tests
         private readonly IService service;
 
         /// <summary>
-        /// Инициализирует новый экземпляр <see cref="WarehouseServiceTests"/>.
+        /// РРЅРёС†РёР°Р»РёР·РёСЂСѓРµС‚ РЅРѕРІС‹Р№ СЌРєР·РµРјРїР»СЏСЂ <see cref="WarehouseServiceTests"/>.
         /// </summary>
         public WarehouseServiceTests() 
         { 
@@ -26,7 +26,7 @@ namespace DataGridView.Service.Tests
         }
 
         /// <summary>
-        /// Тест на проверку вызова метода AddProduct при добавлении товара
+        /// РўРµСЃС‚ РЅР° РїСЂРѕРІРµСЂРєСѓ РІС‹Р·РѕРІР° РјРµС‚РѕРґР° AddProduct РїСЂРё РґРѕР±Р°РІР»РµРЅРёРё С‚РѕРІР°СЂР°
         /// </summary>
         [Fact]
         public async Task AddShouldCallStorageAdd()
@@ -39,7 +39,7 @@ namespace DataGridView.Service.Tests
         }
 
         /// <summary>
-        /// Проверяет, что при удалении товара сервис вызывает метод DeleteProduct хранилища.
+        /// РџСЂРѕРІРµСЂСЏРµС‚, С‡С‚Рѕ РїСЂРё СѓРґР°Р»РµРЅРёРё С‚РѕРІР°СЂР° СЃРµСЂРІРёСЃ РІС‹Р·С‹РІР°РµС‚ РјРµС‚РѕРґ DeleteProduct С…СЂР°РЅРёР»РёС‰Р°.
         /// </summary>
         [Fact]
         public async Task DeleteProductShouldDelete()
@@ -52,7 +52,7 @@ namespace DataGridView.Service.Tests
         }
 
         /// <summary>
-        /// Проверяет, что сервис возвращает данные, которые предоставляет хранилище при получении всех товаров.
+        /// РџСЂРѕРІРµСЂСЏРµС‚, С‡С‚Рѕ СЃРµСЂРІРёСЃ РІРѕР·РІСЂР°С‰Р°РµС‚ РґР°РЅРЅС‹Рµ, РєРѕС‚РѕСЂС‹Рµ РїСЂРµРґРѕСЃС‚Р°РІР»СЏРµС‚ С…СЂР°РЅРёР»РёС‰Рµ РїСЂРё РїРѕР»СѓС‡РµРЅРёРё РІСЃРµС… С‚РѕРІР°СЂРѕРІ.
         /// </summary>
         [Fact]
         public async Task GettAllProductShouldReturnAllDataFromStorage()
@@ -73,7 +73,7 @@ namespace DataGridView.Service.Tests
         }
 
         /// <summary>
-        /// Проверяет, что сервис возвращает статистику, предоставленную хранилищем.
+        /// РџСЂРѕРІРµСЂСЏРµС‚, С‡С‚Рѕ СЃРµСЂРІРёСЃ РІРѕР·РІСЂР°С‰Р°РµС‚ СЃС‚Р°С‚РёСЃС‚РёРєСѓ, РїСЂРµРґРѕСЃС‚Р°РІР»РµРЅРЅСѓСЋ С…СЂР°РЅРёР»РёС‰РµРј.
         /// </summary>
         [Fact]
         public async Task GetStatisticsShouldReturnDataFromStorage()
@@ -96,7 +96,7 @@ namespace DataGridView.Service.Tests
         }
 
         /// <summary>
-        /// Проверяет, что при обновлении продукта сервис вызывает метод UpdateProduct хранилища.
+        /// РџСЂРѕРІРµСЂСЏРµС‚, С‡С‚Рѕ РїСЂРё РѕР±РЅРѕРІР»РµРЅРёРё РїСЂРѕРґСѓРєС‚Р° СЃРµСЂРІРёСЃ РІС‹Р·С‹РІР°РµС‚ РјРµС‚РѕРґ UpdateProduct С…СЂР°РЅРёР»РёС‰Р°.
         /// </summary>
         [Fact]
         public async Task UpdateProductShouldCallStorageUpdateProduct()
@@ -109,7 +109,7 @@ namespace DataGridView.Service.Tests
         }
 
         /// <summary>
-        /// Проверяет, что сервис корректно вычисляет общую стоимость товара без налогов.
+        /// РџСЂРѕРІРµСЂСЏРµС‚, С‡С‚Рѕ СЃРµСЂРІРёСЃ РєРѕСЂСЂРµРєС‚РЅРѕ РІС‹С‡РёСЃР»СЏРµС‚ РѕР±С‰СѓСЋ СЃС‚РѕРёРјРѕСЃС‚СЊ С‚РѕРІР°СЂР° Р±РµР· РЅР°Р»РѕРіРѕРІ.
         /// </summary>
         [Fact]
         public async Task GetProductTotalPriceWithoutTaxShouldCalculateCorrectly()
@@ -126,7 +126,7 @@ namespace DataGridView.Service.Tests
         }
 
         /// <summary>
-        /// Проверяет, что сервис возвращает 0 при попытке расчета стоимости для null товара.
+        /// РџСЂРѕРІРµСЂСЏРµС‚, С‡С‚Рѕ СЃРµСЂРІРёСЃ РІРѕР·РІСЂР°С‰Р°РµС‚ 0 РїСЂРё РїРѕРїС‹С‚РєРµ СЂР°СЃС‡РµС‚Р° СЃС‚РѕРёРјРѕСЃС‚Рё РґР»СЏ null С‚РѕРІР°СЂР°.
         /// </summary>
         [Fact]
         public async Task GetProductTotalPriceWithoutTaxShouldReturnZeroForNullProduct()

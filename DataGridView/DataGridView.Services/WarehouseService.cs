@@ -6,8 +6,14 @@ using Serilog;
 
 namespace DataGridView.Services
 {
+    /// <summary>
+    /// Сервис управления складом гвоздей
+    /// </summary>
     public class WarehouseService(IStorage storage) : IService
     {
+        /// <summary>
+        /// Добавляет новый продукт на склад
+        /// </summary>
         public Task AddProduct(ProductModel product, CancellationToken cancellationToken)
         {
             var sw = Stopwatch.StartNew();
@@ -24,6 +30,9 @@ namespace DataGridView.Services
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Удаляет продукт со склада
+        /// </summary>
         public Task DeleteProduct(ProductModel product, CancellationToken cancellationToken)
         {
             var sw = Stopwatch.StartNew();
@@ -41,6 +50,9 @@ namespace DataGridView.Services
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Получает все продукты со склада
+        /// </summary>
         public async Task<IEnumerable<ProductModel>> GetAllProducts()
         {
             var sw = Stopwatch.StartNew();
@@ -57,6 +69,9 @@ namespace DataGridView.Services
             }
         }
 
+        /// <summary>
+        /// Рассчитывает статистику по складу с учетом НДС
+        /// </summary>
         public async Task<Statistics> GetStatistics(decimal vatRate, CancellationToken cancellationToken)
         {
             var sw = Stopwatch.StartNew();
@@ -73,6 +88,9 @@ namespace DataGridView.Services
             }
         }
 
+        /// <summary>
+        /// Обновляет информацию о продукте
+        /// </summary>
         public Task UpdateProduct(ProductModel product, CancellationToken cancellationToken)
         {
             var sw = Stopwatch.StartNew();
@@ -89,6 +107,9 @@ namespace DataGridView.Services
             }
         }
 
+        /// <summary>
+        /// Рассчитывает общую стоимость продукта без учета налогов
+        /// </summary>
         public Task<decimal> GetProductTotalPriceWithoutTax(ProductModel product, CancellationToken cancellationToken)
         {
             var sw = Stopwatch.StartNew();
