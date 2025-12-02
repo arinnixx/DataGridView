@@ -26,7 +26,7 @@ namespace DataGridView.Service.Tests
         }
 
         /// <summary>
-        /// Тест на проверку вызова метода AddProduct при добавлении товара
+        /// Проверяет, что при добавлении товара сервис вызывает метод AddProduct хранилища.
         /// </summary>
         [Fact]
         public async Task AddShouldCallStorageAdd()
