@@ -2,15 +2,24 @@
 using DataGridView.Entities.Models;
 using DataGridView.MemoryStorage.Contracts;
 using DataGridView.Services.Contracts;
-using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace DataGridView.Services
 {
     /// <summary>
     /// Сервис управления складом гвоздей
     /// </summary>
-    public class WarehouseService(IStorage storage) : IService
+    public class WarehouseService : IService
     {
+        private readonly IStorage storage;
+        private readonly ILogger logger;
+
+        public WarehouseService(IStorage storage, ILoggerFactory loggerFactory)
+        {
+            this.storage = storage;
+            logger = loggerFactory.CreateLogger(nameof(WarehouseService));
+        }
+
         /// <summary>
         /// Добавляет новый продукт на склад
         /// </summary>
@@ -24,8 +33,7 @@ namespace DataGridView.Services
             finally
             {
                 sw.Stop();
-                double ms = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
-                Log.Debug("WarehouseService.AddProduct выполнен за {ms:F6} мс", ms);
+                logger.LogDebug("WarehouseService.AddProduct выполнен за {ElapsedMilliseconds} мс", sw.ElapsedMilliseconds);
             }
             return Task.CompletedTask;
         }
@@ -43,8 +51,7 @@ namespace DataGridView.Services
             finally
             {
                 sw.Stop();
-                double ms = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
-                Log.Debug("WarehouseService.DeleteProduct выполнен за {ms:F6} мс", ms);
+                logger.LogDebug("WarehouseService.DeleteProduct выполнен за {ElapsedMilliseconds} мс", sw.ElapsedMilliseconds);
             }
            
             return Task.CompletedTask;
@@ -64,8 +71,7 @@ namespace DataGridView.Services
             finally
             { 
                 sw.Stop();
-                double ms = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
-                Log.Debug("WarehouseService.GetAllProducts выполнен за {ms:F6} мс", ms);
+                logger.LogDebug("WarehouseService.GetAllProducts выполнен за {ElapsedMilliseconds} мс", sw.ElapsedMilliseconds);
             }
         }
 
@@ -83,8 +89,7 @@ namespace DataGridView.Services
             finally
             {
                 sw.Stop();
-                double ms = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
-                Log.Debug("WarehouseService.GetStatistics выполнен за {ms:F6} мс", ms);
+                logger.LogDebug("WarehouseService.GetStatistics выполнен за {ElapsedMilliseconds} мс", sw.ElapsedMilliseconds);
             }
         }
 
@@ -102,8 +107,7 @@ namespace DataGridView.Services
             finally
             {
                 sw.Stop();
-                double ms = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
-                Log.Debug("WarehouseService.UpdateProduct выполнен за {ms:F6} мс", ms);
+                logger.LogDebug("WarehouseService.UpdateProduct выполнен за {ElapsedMilliseconds} мс", sw.ElapsedMilliseconds);
             }
         }
 
@@ -125,8 +129,7 @@ namespace DataGridView.Services
             finally
             {
                 sw.Stop();
-                double ms = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
-                Log.Debug("WarehouseService.GetProductTotalPriceWithoutTax выполнен за {ms:F6} мс", ms);
+                logger.LogDebug("WarehouseService.GetProductTotalPriceWithoutTax выполнен за {ElapsedMilliseconds} мс", sw.ElapsedMilliseconds);
             }
         }
     }

@@ -3,6 +3,7 @@ using DataGridView.Entities.Models;
 using DataGridView.MemoryStorage.Contracts;
 using DataGridView.Services;
 using DataGridView.Services.Contracts;
+using Microsoft.Extensions.Logging;
 using FluentAssertions;
 using Moq;
 
@@ -19,10 +20,17 @@ namespace DataGridView.Service.Tests
         /// <summary>
         /// Инициализирует новый экземпляр <see cref="WarehouseServiceTests"/>.
         /// </summary>
-        public WarehouseServiceTests() 
-        { 
+        public WarehouseServiceTests()
+        {
             storageMock = new Mock<IStorage>();
-            service = new WarehouseService(storageMock.Object);
+
+            var mockLogger = new Mock<ILogger>();
+            var mockLoggerFactory = new Mock<ILoggerFactory>();
+            mockLoggerFactory
+                .Setup(f => f.CreateLogger(It.IsAny<string>())).
+                Returns(mockLogger.Object);
+
+            service = new WarehouseService(storageMock.Object, mockLoggerFactory.Object);
         }
 
         /// <summary>
@@ -31,11 +39,14 @@ namespace DataGridView.Service.Tests
         [Fact]
         public async Task AddShouldCallStorageAdd()
         {
+            // Arrange
             var product = new ProductModel();
 
-            await service.AddProduct(product,CancellationToken.None);
+            // Act
+            await service.AddProduct(product, CancellationToken.None);
 
-            storageMock.Verify(s=> s.AddProduct(product, CancellationToken.None),Times.Once);
+            // Assert
+            storageMock.Verify(s => s.AddProduct(product, CancellationToken.None), Times.Once);
         }
 
         /// <summary>
@@ -44,11 +55,14 @@ namespace DataGridView.Service.Tests
         [Fact]
         public async Task DeleteProductShouldDelete()
         {
+            // Arrange
             var product = new ProductModel();
 
-            await service.DeleteProduct(product,CancellationToken.None);
+            // Act
+            await service.DeleteProduct(product, CancellationToken.None);
 
-            storageMock.Verify(s=> s.DeleteProduct(product, CancellationToken.None), Times.Once);
+            // Assert
+            storageMock.Verify(s => s.DeleteProduct(product, CancellationToken.None), Times.Once);
         }
 
         /// <summary>
@@ -57,6 +71,7 @@ namespace DataGridView.Service.Tests
         [Fact]
         public async Task GettAllProductShouldReturnAllDataFromStorage()
         {
+            // Arrange
             var products = new List<ProductModel>
             {
                 new ProductModel(),
@@ -67,8 +82,10 @@ namespace DataGridView.Service.Tests
                 .Setup(s => s.GetAllProducts())
                 .ReturnsAsync(products);
 
+            // Act
             var result = await service.GetAllProducts();
 
+            // Assert
             result.Should().BeSameAs(products);
         }
 
@@ -78,6 +95,7 @@ namespace DataGridView.Service.Tests
         [Fact]
         public async Task GetStatisticsShouldReturnDataFromStorage()
         {
+            // Arrange
             var vatRate = WarehouseConstants.VatRate;
             var expectedStatistics = new Statistics
             {
@@ -90,8 +108,10 @@ namespace DataGridView.Service.Tests
                 .Setup(s => s.GetStatistics(vatRate, CancellationToken.None))
                 .ReturnsAsync(expectedStatistics);
 
+            // Act
             var result = await service.GetStatistics(vatRate, CancellationToken.None);
 
+            // Assert
             result.Should().BeSameAs(expectedStatistics);
         }
 
@@ -101,10 +121,13 @@ namespace DataGridView.Service.Tests
         [Fact]
         public async Task UpdateProductShouldCallStorageUpdateProduct()
         {
+            // Arrange
             var product = new ProductModel();
 
+            // Act
             await service.UpdateProduct(product, CancellationToken.None);
 
+            // Assert
             storageMock.Verify(s => s.UpdateProduct(product, CancellationToken.None), Times.Once);
         }
 
@@ -114,14 +137,17 @@ namespace DataGridView.Service.Tests
         [Fact]
         public async Task GetProductTotalPriceWithoutTaxShouldCalculateCorrectly()
         {
+            // Arrange
             var product = new ProductModel
             {
                 Price = 100m,
                 Quantity = 5
             };
 
+            // Act
             var result = await service.GetProductTotalPriceWithoutTax(product, CancellationToken.None);
 
+            // Assert
             result.Should().Be(500m);
         }
 
@@ -131,10 +157,13 @@ namespace DataGridView.Service.Tests
         [Fact]
         public async Task GetProductTotalPriceWithoutTaxShouldReturnZeroForNullProduct()
         {
+            // Arrange
             ProductModel? product = null;
 
+            // Act
             var result = await service.GetProductTotalPriceWithoutTax(product!, CancellationToken.None);
 
+            // Assert
             result.Should().Be(0m);
         }
     }
