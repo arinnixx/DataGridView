@@ -1,7 +1,6 @@
 ﻿using DataGridView.Entities.Models;
 using DataGridView.Constants;
-using DataGridView.MemoryStorage.Contracts;
-using DataGridView.MemoryStorage;
+using DataGridView.Services.Contracts;
 
 namespace DataGridView.Forms
 {
@@ -10,15 +9,15 @@ namespace DataGridView.Forms
     /// </summary>
     public partial class MainForm : Form
     {
-        private readonly IStorage storage;
+        private readonly IService service;
         private readonly BindingSource bindingSource = [];
 
         /// <summary>
         /// Инициализирует новый экземпляр главной формы приложения
         /// </summary>
-        public MainForm(IStorage storage)
+        public MainForm(IService storage)
         {
-            this.storage = storage;
+            service = storage;
 
             InitializeComponent();
 
@@ -69,7 +68,7 @@ namespace DataGridView.Forms
             };
             foreach (var item in items)
             {
-                await storage.AddProduct(item, CancellationToken.None);
+                await service.AddProduct(item, CancellationToken.None);
             }
 
         }
@@ -101,7 +100,7 @@ namespace DataGridView.Forms
             }
             if (col == Amount)
             {
-                var totalAmount = await storage.GetProductTotalPriceWithoutTax(product.Id, CancellationToken.None);
+                var totalAmount = await service.GetProductTotalPriceWithoutTax(product, CancellationToken.None);
                 e.Value = totalAmount.ToString("C2");
 
             }
@@ -116,7 +115,7 @@ namespace DataGridView.Forms
 
             if (addForm.ShowDialog(this) == DialogResult.OK)
             {
-                await storage.AddProduct(addForm.CurrentProduct, CancellationToken.None);
+                await service.AddProduct(addForm.CurrentProduct, CancellationToken.None);
                 await OnUpdate();
             }
         }
@@ -126,7 +125,7 @@ namespace DataGridView.Forms
         /// </summary>
         private async Task SetStatistic()
         {
-            var statistics = await storage.GetStatistics(WarehouseConstants.VatRate, CancellationToken.None);
+            var statistics = await service.GetStatistics(WarehouseConstants.VatRate, CancellationToken.None);
             toolStripStatusLabelQuantity.Text = $"Товарных позиций: {statistics.TotalProducts}";
             toolStripStatusLabelAmount.Text = $"Общая сумма без НДС: {statistics.TotalAmountWithoutVat:C2}";
             toolStripStatusLabelAmountVAT.Text = $"Общая сумма с НДС: {statistics.TotalAmountWithVat:C2}";
@@ -147,7 +146,7 @@ namespace DataGridView.Forms
             var editForm = new AddProductForm(selectedProduct);
             if (editForm.ShowDialog() == DialogResult.OK)
             {
-                await storage.UpdateProduct(editForm.CurrentProduct, CancellationToken.None);
+                await service.UpdateProduct(editForm.CurrentProduct, CancellationToken.None);
                 await OnUpdate();
             }
         }
@@ -169,7 +168,7 @@ namespace DataGridView.Forms
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                await storage.DeleteProduct(product.Id, CancellationToken.None);
+                await service.DeleteProduct(product, CancellationToken.None);
                 await OnUpdate();
             }
         }
@@ -179,7 +178,7 @@ namespace DataGridView.Forms
         /// </summary>
         public async Task OnUpdate()
         {
-            var products = await storage.GetAllProducts();
+            var products = await service.GetAllProducts();
             bindingSource.DataSource = products.ToList();
             bindingSource.ResetBindings(false);
             await SetStatistic();
@@ -192,7 +191,7 @@ namespace DataGridView.Forms
 
         private async Task LoadData()
         {
-            var products = await storage.GetAllProducts();
+            var products = await service.GetAllProducts();
             bindingSource.DataSource = products.ToList();
             dataGridViewProducts.DataSource = bindingSource;
             await SetStatistic();
