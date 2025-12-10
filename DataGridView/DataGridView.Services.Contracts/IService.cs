@@ -1,41 +1,42 @@
 ﻿using DataGridView.Entities.Models;
+using DataGridView.MemoryStorage.Contracts;
 
-namespace DataGridView.MemoryStorage.Contracts
+
+namespace DataGridView.Services.Contracts
 {
     /// <summary>
-    /// Интерфейс хранилища
+    /// Интерфейс для сервиса склада
     /// </summary>
-    public interface IStorage
+    public interface IService
     {
         /// <summary>
         /// Получить все товары
         /// </summary>
-        public Task<IEnumerable<ProductModel>> GetAllProducts();
+        Task<IEnumerable<ProductModel>> GetAllProducts();
 
         /// <summary>
         /// Добавить новый товар
         /// </summary>
-        public Task AddProduct(ProductModel product, CancellationToken cancellationToken);
+        Task AddProduct(ProductModel product, CancellationToken cancellationToken);
 
         /// <summary>
         /// Обновить товар
         /// </summary>
-        public Task UpdateProduct(ProductModel product, CancellationToken cancellationToken);
+        Task UpdateProduct(ProductModel product, CancellationToken cancellationToken);
 
         /// <summary>
         /// Удалить товар
         /// </summary>
-        public Task DeleteProduct(ProductModel product, CancellationToken cancellationToken);
+        Task DeleteProduct(ProductModel product, CancellationToken cancellationToken);
 
         /// <summary>
         /// Получить общую стоимость товара БЕЗ НДС (Цена * Количество)
         /// </summary>
-        public Task<decimal> GetProductTotalPriceWithoutTax(Guid id, CancellationToken cancellationToken);
+        Task<decimal> GetProductTotalPriceWithoutTax(ProductModel product, CancellationToken cancellationToken);
 
         /// <summary>
         /// Получить статистику по продуктам на складе
         /// </summary>
-        public Task<Statistics> GetStatistics(decimal vatRate, CancellationToken cancellationToken);
-
+        Task<Statistics> GetStatistics(decimal vatRate, CancellationToken cancellationToken);
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace DataGridView.EntityManager
+﻿namespace DataGridView.MemoryStorage.Contracts
 {
     /// <summary>
     /// Класс для хранения статистики
