@@ -33,6 +33,7 @@
             toolStripButtonAdd = new ToolStripButton();
             toolStripButtonEdit = new ToolStripButton();
             toolStripButtonDelete = new ToolStripButton();
+            toolStripButtonUpdate = new ToolStripButton();
             statusStrip = new StatusStrip();
             toolStripStatusLabelQuantity = new ToolStripStatusLabel();
             toolStripStatusLabelAmount = new ToolStripStatusLabel();
@@ -52,7 +53,7 @@
             // 
             // toolStrip
             // 
-            toolStrip.Items.AddRange(new ToolStripItem[] { toolStripButtonAdd, toolStripButtonEdit, toolStripButtonDelete });
+            toolStrip.Items.AddRange(new ToolStripItem[] { toolStripButtonAdd, toolStripButtonEdit, toolStripButtonDelete, toolStripButtonUpdate });
             toolStrip.Location = new Point(0, 0);
             toolStrip.Name = "toolStrip";
             toolStrip.Size = new Size(910, 25);
@@ -88,6 +89,17 @@
             toolStripButtonDelete.Size = new Size(89, 22);
             toolStripButtonDelete.Text = "Удалить товар";
             toolStripButtonDelete.Click += toolStripButtonDelete_Click;
+            // 
+            // toolStripButtonUpdate
+            // 
+            toolStripButtonUpdate.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripButtonUpdate.Image = (Image)resources.GetObject("toolStripButtonUpdate.Image");
+            toolStripButtonUpdate.ImageTransparentColor = Color.Magenta;
+            toolStripButtonUpdate.Name = "toolStripButtonUpdate";
+            toolStripButtonUpdate.Size = new Size(65, 22);
+            toolStripButtonUpdate.Text = "Обновить";
+            toolStripButtonUpdate.TextImageRelation = TextImageRelation.TextAboveImage;
+            toolStripButtonUpdate.Click += toolStripButtonUpdate_Click;
             // 
             // statusStrip
             // 
@@ -224,5 +236,6 @@
         private DataGridViewTextBoxColumn MinQuantity;
         private DataGridViewTextBoxColumn Price;
         private DataGridViewTextBoxColumn Amount;
+        private ToolStripButton toolStripButtonUpdate;
     }
 }

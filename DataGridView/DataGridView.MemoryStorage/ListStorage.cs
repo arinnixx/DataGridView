@@ -54,27 +54,5 @@ namespace DataGridView.MemoryStorage
             return Task.CompletedTask;
         }
 
-        Task<decimal> IStorage.GetProductTotalPriceWithoutTax(Guid id, CancellationToken cancellationToken)
-        {
-            var product = products.FirstOrDefault(p => p.Id == id);
-            if (product == null)
-            {
-                return Task.FromResult(0m);
-            }
-            var totalPrice = product.Price * product.Quantity;
-            return Task.FromResult(totalPrice);
-        }
-
-        async Task<Statistics> IStorage.GetStatistics(decimal vatRate, CancellationToken cancellationToken)
-        {
-            var products = await GetAllProducts();
-            var statistics = new Statistics
-            {
-                TotalProducts = products.Count(),
-                TotalAmountWithoutVat = products.Sum(p => p.Price * p.Quantity),
-                TotalAmountWithVat = products.Sum(p => p.Price * vatRate * p.Quantity)
-            };
-            return statistics;
-        }
     }
 }

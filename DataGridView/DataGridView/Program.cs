@@ -1,5 +1,5 @@
+using DatabaseStorage;
 using DataGridView.Forms;
-using DataGridView.MemoryStorage;
 using DataGridView.Services;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -31,7 +31,7 @@ namespace DataGridView
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
 
-            var storage = new ListStorage();
+            var storage = new WarehouseDatabaseStorage();
             var service = new WarehouseService(storage, loggerFactory);
 
             ApplicationConfiguration.Initialize();

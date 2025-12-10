@@ -15,13 +15,11 @@ namespace DataGridView.Forms
         /// <summary>
         /// Инициализирует новый экземпляр главной формы приложения
         /// </summary>
-        public MainForm(IService storage)
+        public MainForm(IService service)
         {
-            service = storage;
+            this.service = service;
 
             InitializeComponent();
-
-            InitializeDataAsync().GetAwaiter().GetResult();
 
             dataGridViewProducts.AutoGenerateColumns = false;
         }
@@ -31,6 +29,13 @@ namespace DataGridView.Forms
         /// </summary>
         private async Task InitializeDataAsync()
         {
+            var products = await service.GetAllProducts();
+
+            if (products.Count()>0)
+            {
+                return;
+            }
+
             var items = new List<ProductModel>
             {
                 new ProductModel
@@ -191,9 +196,18 @@ namespace DataGridView.Forms
 
         private async Task LoadData()
         {
+            await InitializeDataAsync();
+
             var products = await service.GetAllProducts();
             bindingSource.DataSource = products.ToList();
             dataGridViewProducts.DataSource = bindingSource;
+            await SetStatistic();
+        }
+
+        private async void toolStripButtonUpdate_Click(object sender, EventArgs e)
+        {
+            bindingSource.DataSource = await service.GetAllProducts();
+            bindingSource.ResetBindings(false);
             await SetStatistic();
         }
     }

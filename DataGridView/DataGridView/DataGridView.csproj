@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DatabaseStorage\DatabaseStorage.csproj" />
     <ProjectReference Include="..\DataGridView.Entities.Contracts\DataGridView.Constants.csproj" />
     <ProjectReference Include="..\DataGridView.MemoryStorage.Contracts\DataGridView.MemoryStorage.Contracts.csproj" />
     <ProjectReference Include="..\DataGridView.MemoryStorage\DataGridView.MemoryStorage.csproj" />

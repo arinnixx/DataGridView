@@ -27,15 +27,5 @@ namespace DataGridView.MemoryStorage.Contracts
         /// </summary>
         public Task DeleteProduct(ProductModel product, CancellationToken cancellationToken);
 
-        /// <summary>
-        /// Получить общую стоимость товара БЕЗ НДС (Цена * Количество)
-        /// </summary>
-        public Task<decimal> GetProductTotalPriceWithoutTax(Guid id, CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Получить статистику по продуктам на складе
-        /// </summary>
-        public Task<Statistics> GetStatistics(decimal vatRate, CancellationToken cancellationToken);
-
     }
 }

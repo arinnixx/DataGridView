@@ -83,7 +83,19 @@ namespace DataGridView.Services
             var sw = Stopwatch.StartNew();
             try
             {
-                var statistics = await storage.GetStatistics(vatRate, cancellationToken);
+                var products = await storage.GetAllProducts();
+
+                var totalProducts = products.Count();
+                var totalAmountWithoutVat = products.Sum(p => p.Price * p.Quantity);
+                var totalAmountWithVat = products.Sum(p => p.Price * vatRate * p.Quantity);
+
+                var statistics = new Statistics
+                {
+                    TotalProducts = totalProducts,
+                    TotalAmountWithoutVat = totalAmountWithoutVat,
+                    TotalAmountWithVat = totalAmountWithVat
+
+                };
                 return statistics;
             }
             finally
