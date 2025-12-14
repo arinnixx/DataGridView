@@ -1,0 +1,57 @@
+﻿@model DataGridView.Entities.Models.ProductModel
+
+@{
+    ViewData["Title"] = "Удалить товар";
+}
+
+<h2 class="text-center mb-4">Удалить товар</h2>
+
+<div class="alert alert-warning" role="alert">
+    <h4>Вы уверены, что хотите удалить этот товар?</h4>
+    <p>Это действие нельзя отменить.</p>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4>Информация о товаре</h4>
+                <hr />
+
+                <dl class="row">
+                    <dt class="col-sm-4">Наименование:</dt>
+                    <dd class="col-sm-8">@Model.ProductName</dd>
+
+                    <dt class="col-sm-4">Размер:</dt>
+                    <dd class="col-sm-8">@Model.Size</dd>
+
+                    <dt class="col-sm-4">Материал:</dt>
+                    <dd class="col-sm-8">@Model.Material</dd>
+
+                    <dt class="col-sm-4">Количество:</dt>
+                    <dd class="col-sm-8">@Model.Quantity</dd>
+
+                    <dt class="col-sm-4">Мин. количество:</dt>
+                    <dd class="col-sm-8">@Model.MinimumQuantity</dd>
+
+                    <dt class="col-sm-4">Цена:</dt>
+                    <dd class="col-sm-8">@Model.Price.ToString("C2")</dd>
+
+                    <dt class="col-sm-4">Общая стоимость:</dt>
+                    <dd class="col-sm-8">@((Model.Price * Model.Quantity).ToString("C2"))</dd>
+                </dl>
+
+                <form asp-action="Delete" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@Model.Id" />
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-danger">Удалить</button>
+                        <span style="margin: 0 8px;"></span>
+                        <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
