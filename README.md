@@ -7,6 +7,8 @@ Update 01.12 - Unit-тесты, логирование, Seq
 
 Update 10.12 - ORM EF Core
 
+Update 14.12 - ASP.NET MVC
+
 Тыртышная Арина
 
 ИП-22-3
