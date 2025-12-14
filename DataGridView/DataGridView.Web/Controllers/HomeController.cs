@@ -8,10 +8,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DataGridView.Web.Controllers
 {
+    /// <summary>
+    /// Контроллер для управления продуктами на складе
+    /// </summary>
     public class HomeController(IService service) : Controller
     {
        private IService Service { get; set; } = service;
 
+        /// <summary>
+        /// Отображает главную страницу со списком всех продуктов и статистикой склада
+        /// </summary>
         public async Task<IActionResult> Index()
         {
             var products = await Service.GetAllProducts();
@@ -26,11 +32,19 @@ namespace DataGridView.Web.Controllers
             return View(viewModel);
         }
 
+        /// <summary>
+        /// Отображает форму для создания нового продукта
+        /// </summary>
+
         [HttpGet]
         public IActionResult Create()
         {
             return View(new ProductEditViewModel());
         }
+
+        /// <summary>
+        /// Обрабатывает отправку формы создания нового продукта
+        /// </summary>
 
         [HttpPost]
         public async Task<IActionResult> Create(ProductEditViewModel productEditViewModel)
@@ -55,6 +69,9 @@ namespace DataGridView.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        /// <summary>
+        /// Отображает форму для редактирования существующего продукта по его идентификатору
+        /// </summary>
 
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id) // Измените параметр на id
@@ -81,6 +98,9 @@ namespace DataGridView.Web.Controllers
             return View(productEditViewModel);
         }
 
+        /// <summary>
+        /// Обрабатывает отправку формы редактирования продукта
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> Edit(ProductEditViewModel productEditViewModel)
         {
@@ -108,6 +128,9 @@ namespace DataGridView.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        /// <summary>
+        /// Отображает страницу подтверждения удаления продукта
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {
@@ -122,7 +145,9 @@ namespace DataGridView.Web.Controllers
             return View(product);
         }
 
-
+        /// <summary>
+        /// Выполняет удаление продукта после подтверждения
+        /// </summary>
         [HttpPost]
         [ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -140,11 +165,17 @@ namespace DataGridView.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        /// <summary>
+        /// Отображает страницу "Политика конфиденциальности".
+        /// </summary>
         public IActionResult Privacy()
         {
             return View();
         }
 
+        /// <summary>
+        /// Отображает страницу ошибки с информацией о текущем запросе.
+        /// </summary>
         public IActionResult Error()
         {
             return View(new ErrorViewModel
