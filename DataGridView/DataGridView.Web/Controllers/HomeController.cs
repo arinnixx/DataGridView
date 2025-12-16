@@ -9,14 +9,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace DataGridView.Web.Controllers
 {
     /// <summary>
-    /// Контроллер для управления продуктами на складе
+    /// РљРѕРЅС‚СЂРѕР»Р»РµСЂ РґР»СЏ СѓРїСЂР°РІР»РµРЅРёСЏ РїСЂРѕРґСѓРєС‚Р°РјРё РЅР° СЃРєР»Р°РґРµ
     /// </summary>
     public class HomeController(IService service) : Controller
     {
        private IService Service { get; set; } = service;
 
         /// <summary>
-        /// Отображает главную страницу со списком всех продуктов и статистикой склада
+        /// РћС‚РѕР±СЂР°Р¶Р°РµС‚ РіР»Р°РІРЅСѓСЋ СЃС‚СЂР°РЅРёС†Сѓ СЃРѕ СЃРїРёСЃРєРѕРј РІСЃРµС… РїСЂРѕРґСѓРєС‚РѕРІ Рё СЃС‚Р°С‚РёСЃС‚РёРєРѕР№ СЃРєР»Р°РґР°
         /// </summary>
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
@@ -33,7 +33,7 @@ namespace DataGridView.Web.Controllers
         }
 
         /// <summary>
-        /// Отображает форму для создания нового продукта
+        /// РћС‚РѕР±СЂР°Р¶Р°РµС‚ С„РѕСЂРјСѓ РґР»СЏ СЃРѕР·РґР°РЅРёСЏ РЅРѕРІРѕРіРѕ РїСЂРѕРґСѓРєС‚Р°
         /// </summary>
 
         [HttpGet]
@@ -43,7 +43,7 @@ namespace DataGridView.Web.Controllers
         }
 
         /// <summary>
-        /// Обрабатывает отправку формы создания нового продукта
+        /// РћР±СЂР°Р±Р°С‚С‹РІР°РµС‚ РѕС‚РїСЂР°РІРєСѓ С„РѕСЂРјС‹ СЃРѕР·РґР°РЅРёСЏ РЅРѕРІРѕРіРѕ РїСЂРѕРґСѓРєС‚Р°
         /// </summary>
 
         [HttpPost]
@@ -70,14 +70,14 @@ namespace DataGridView.Web.Controllers
         }
 
         /// <summary>
-        /// Отображает форму для редактирования существующего продукта по его идентификатору
+        /// РћС‚РѕР±СЂР°Р¶Р°РµС‚ С„РѕСЂРјСѓ РґР»СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРіРѕ РїСЂРѕРґСѓРєС‚Р° РїРѕ РµРіРѕ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂСѓ
         /// </summary>
 
         [HttpGet]
-        public async Task<IActionResult> Edit(Guid id, CancellationToken cancellationToken) // Измените параметр на id
+        public async Task<IActionResult> Edit(Guid id, CancellationToken cancellationToken) // РР·РјРµРЅРёС‚Рµ РїР°СЂР°РјРµС‚СЂ РЅР° id
         {
             var products = await Service.GetAllProducts(cancellationToken);
-            var product = products.FirstOrDefault(p => p.Id == id); // Ищем по id
+            var product = products.FirstOrDefault(p => p.Id == id); // РС‰РµРј РїРѕ id
 
             if (product == null)
             {
@@ -99,7 +99,7 @@ namespace DataGridView.Web.Controllers
         }
 
         /// <summary>
-        /// Обрабатывает отправку формы редактирования продукта
+        /// РћР±СЂР°Р±Р°С‚С‹РІР°РµС‚ РѕС‚РїСЂР°РІРєСѓ С„РѕСЂРјС‹ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ РїСЂРѕРґСѓРєС‚Р°
         /// </summary>
         [HttpPost]
         public async Task<IActionResult> Edit(ProductEditViewModel productEditViewModel, CancellationToken cancellationToken)
@@ -129,7 +129,7 @@ namespace DataGridView.Web.Controllers
         }
 
         /// <summary>
-        /// Отображает страницу подтверждения удаления продукта
+        /// РћС‚РѕР±СЂР°Р¶Р°РµС‚ СЃС‚СЂР°РЅРёС†Сѓ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ СѓРґР°Р»РµРЅРёСЏ РїСЂРѕРґСѓРєС‚Р°
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
@@ -146,7 +146,7 @@ namespace DataGridView.Web.Controllers
         }
 
         /// <summary>
-        /// Выполняет удаление продукта после подтверждения
+        /// Р’С‹РїРѕР»РЅСЏРµС‚ СѓРґР°Р»РµРЅРёРµ РїСЂРѕРґСѓРєС‚Р° РїРѕСЃР»Рµ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ
         /// </summary>
         [HttpPost]
         [ActionName("Delete")]
@@ -166,7 +166,7 @@ namespace DataGridView.Web.Controllers
         }
 
         /// <summary>
-        /// Отображает страницу "Политика конфиденциальности".
+        /// РћС‚РѕР±СЂР°Р¶Р°РµС‚ СЃС‚СЂР°РЅРёС†Сѓ "РџРѕР»РёС‚РёРєР° РєРѕРЅС„РёРґРµРЅС†РёР°Р»СЊРЅРѕСЃС‚Рё".
         /// </summary>
         public IActionResult Privacy()
         {
@@ -174,7 +174,7 @@ namespace DataGridView.Web.Controllers
         }
 
         /// <summary>
-        /// Отображает страницу ошибки с информацией о текущем запросе.
+        /// РћС‚РѕР±СЂР°Р¶Р°РµС‚ СЃС‚СЂР°РЅРёС†Сѓ РѕС€РёР±РєРё СЃ РёРЅС„РѕСЂРјР°С†РёРµР№ Рѕ С‚РµРєСѓС‰РµРј Р·Р°РїСЂРѕСЃРµ.
         /// </summary>
         public IActionResult Error()
         {
