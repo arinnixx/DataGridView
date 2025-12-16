@@ -18,10 +18,10 @@ namespace DataGridView.Web.Controllers
         /// <summary>
         /// Отображает главную страницу со списком всех продуктов и статистикой склада
         /// </summary>
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            var products = await Service.GetAllProducts();
-            var statistics = await Service.GetStatistics(WarehouseConstants.VatRate,CancellationToken.None);
+            var products = await Service.GetAllProducts(cancellationToken);
+            var statistics = await Service.GetStatistics(WarehouseConstants.VatRate,cancellationToken);
 
             var viewModel = new IndexViewModel
             {
@@ -47,7 +47,7 @@ namespace DataGridView.Web.Controllers
         /// </summary>
 
         [HttpPost]
-        public async Task<IActionResult> Create(ProductEditViewModel productEditViewModel)
+        public async Task<IActionResult> Create(ProductEditViewModel productEditViewModel, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace DataGridView.Web.Controllers
                 Price = productEditViewModel.Price
             };
 
-            await Service.AddProduct(product, CancellationToken.None);
+            await Service.AddProduct(product, cancellationToken);
             return RedirectToAction(nameof(Index));
         }
 
@@ -74,9 +74,9 @@ namespace DataGridView.Web.Controllers
         /// </summary>
 
         [HttpGet]
-        public async Task<IActionResult> Edit(Guid id) // Измените параметр на id
+        public async Task<IActionResult> Edit(Guid id, CancellationToken cancellationToken) // Измените параметр на id
         {
-            var products = await Service.GetAllProducts();
+            var products = await Service.GetAllProducts(cancellationToken);
             var product = products.FirstOrDefault(p => p.Id == id); // Ищем по id
 
             if (product == null)
@@ -86,7 +86,7 @@ namespace DataGridView.Web.Controllers
 
             var productEditViewModel = new ProductEditViewModel
             {
-                Id = product.Id, // Добавьте это
+                Id = product.Id, 
                 ProductName = product.ProductName,
                 Size = product.Size,
                 Material = product.Material,
@@ -102,14 +102,14 @@ namespace DataGridView.Web.Controllers
         /// Обрабатывает отправку формы редактирования продукта
         /// </summary>
         [HttpPost]
-        public async Task<IActionResult> Edit(ProductEditViewModel productEditViewModel)
+        public async Task<IActionResult> Edit(ProductEditViewModel productEditViewModel, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
             {
                 return View(productEditViewModel);
             }
 
-            var products = await Service.GetAllProducts();
+            var products = await Service.GetAllProducts(cancellationToken);
             var product = products.FirstOrDefault(p => p.Id == productEditViewModel.Id);
 
             if (product == null)
@@ -124,7 +124,7 @@ namespace DataGridView.Web.Controllers
             product.MinimumQuantity = productEditViewModel.MinimumQuantity;
             product.Price = productEditViewModel.Price;
 
-            await Service.UpdateProduct(product, CancellationToken.None);
+            await Service.UpdateProduct(product, cancellationToken);
             return RedirectToAction(nameof(Index));
         }
 
@@ -132,9 +132,9 @@ namespace DataGridView.Web.Controllers
         /// Отображает страницу подтверждения удаления продукта
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
-            var products = await Service.GetAllProducts();
+            var products = await Service.GetAllProducts(cancellationToken);
             var product = products.FirstOrDefault(p => p.Id == id);
 
             if (product == null)
@@ -151,9 +151,9 @@ namespace DataGridView.Web.Controllers
         [HttpPost]
         [ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id) 
+        public async Task<IActionResult> DeleteConfirmed(Guid id, CancellationToken cancellationToken) 
         {
-            var products = await Service.GetAllProducts();
+            var products = await Service.GetAllProducts(cancellationToken);
             var product = products.FirstOrDefault(p => p.Id == id);
 
             if (product == null)
@@ -161,7 +161,7 @@ namespace DataGridView.Web.Controllers
                 return NotFound();
             }
 
-            await Service.DeleteProduct(product, CancellationToken.None);
+            await Service.DeleteProduct(product, cancellationToken);
             return RedirectToAction(nameof(Index));
         }
 
