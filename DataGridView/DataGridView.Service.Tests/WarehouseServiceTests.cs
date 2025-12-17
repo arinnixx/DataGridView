@@ -79,11 +79,11 @@ namespace DataGridView.Service.Tests
             };
 
             storageMock
-                .Setup(s => s.GetAllProducts())
+                .Setup(s => s.GetAllProducts(CancellationToken.None))
                 .ReturnsAsync(products);
 
             // Act
-            var result = await service.GetAllProducts();
+            var result = await service.GetAllProducts(CancellationToken.None);
 
             // Assert
             result.Should().BeSameAs(products);
@@ -105,7 +105,7 @@ namespace DataGridView.Service.Tests
             };
 
             storageMock
-                .Setup(s => s.GetAllProducts())
+                .Setup(s => s.GetAllProducts(CancellationToken.None))
                 .ReturnsAsync(products);
 
 
@@ -126,7 +126,7 @@ namespace DataGridView.Service.Tests
             result.TotalAmountWithoutVat.Should().Be(expectedStatistics.TotalAmountWithoutVat);
             result.TotalAmountWithVat.Should().Be(expectedStatistics.TotalAmountWithVat);
 
-            storageMock.Verify(s => s.GetAllProducts(), Times.Once);
+            storageMock.Verify(s => s.GetAllProducts(CancellationToken.None), Times.Once);
         }
 
         /// <summary>

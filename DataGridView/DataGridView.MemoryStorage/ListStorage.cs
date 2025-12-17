@@ -19,7 +19,7 @@ namespace DataGridView.MemoryStorage
         }
 
         /// <inheritdoc/>
-        public Task<IEnumerable<ProductModel>> GetAllProducts()
+        public Task<IEnumerable<ProductModel>> GetAllProducts(CancellationToken cancellationToken)
         {
             return Task.FromResult<IEnumerable<ProductModel>>(products);
         }
