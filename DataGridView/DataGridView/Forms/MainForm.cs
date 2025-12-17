@@ -29,7 +29,7 @@ namespace DataGridView.Forms
         /// </summary>
         private async Task InitializeDataAsync()
         {
-            var products = await service.GetAllProducts();
+            var products = await service.GetAllProducts(CancellationToken.None);
 
             if (products.Count()>0)
             {
@@ -183,7 +183,7 @@ namespace DataGridView.Forms
         /// </summary>
         public async Task OnUpdate()
         {
-            var products = await service.GetAllProducts();
+            var products = await service.GetAllProducts(CancellationToken.None);
             bindingSource.DataSource = products.ToList();
             bindingSource.ResetBindings(false);
             await SetStatistic();
@@ -198,7 +198,7 @@ namespace DataGridView.Forms
         {
             await InitializeDataAsync();
 
-            var products = await service.GetAllProducts();
+            var products = await service.GetAllProducts(CancellationToken.None);
             bindingSource.DataSource = products.ToList();
             dataGridViewProducts.DataSource = bindingSource;
             await SetStatistic();
@@ -206,7 +206,7 @@ namespace DataGridView.Forms
 
         private async void toolStripButtonUpdate_Click(object sender, EventArgs e)
         {
-            bindingSource.DataSource = await service.GetAllProducts();
+            bindingSource.DataSource = await service.GetAllProducts(CancellationToken.None);
             bindingSource.ResetBindings(false);
             await SetStatistic();
         }

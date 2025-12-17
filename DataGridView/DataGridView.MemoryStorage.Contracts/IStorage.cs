@@ -10,7 +10,7 @@ namespace DataGridView.MemoryStorage.Contracts
         /// <summary>
         /// Получить все товары
         /// </summary>
-        public Task<IEnumerable<ProductModel>> GetAllProducts();
+        public Task<IEnumerable<ProductModel>> GetAllProducts(CancellationToken cancellationToken);
 
         /// <summary>
         /// Добавить новый товар

@@ -1,0 +1,69 @@
+﻿@model DataGridView.Web.Models.ProductEditViewModel
+
+@{
+    ViewData["Title"] = "Добавить товар";
+}
+
+<h2 class="text-center mb-4">Добавить новый товар</h2>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group mb-3">
+                        <label asp-for="ProductName" class="form-label"></label>
+                        <input asp-for="ProductName" class="form-control" />
+                        <span asp-validation-for="ProductName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Size" class="form-label"></label>
+                        <input asp-for="Size" class="form-control" />
+                        <span asp-validation-for="Size" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Material" class="form-label"></label>
+                        <select asp-for="Material" asp-items="Html.GetEnumSelectList<DataGridView.Entities.Models.MaterialType>()" class="form-control">
+                            <option value="">Выберите материал</option>
+                        </select>
+                        <span asp-validation-for="Material" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Quantity" class="form-label"></label>
+                        <input asp-for="Quantity" class="form-control" type="number" min="1" />
+                        <span asp-validation-for="Quantity" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="MinimumQuantity" class="form-label"></label>
+                        <input asp-for="MinimumQuantity" class="form-control" type="number" min="1" />
+                        <span asp-validation-for="MinimumQuantity" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Price" class="form-label"></label>
+                        <input asp-for="Price" class="form-control" type="number" step="0.01" min="0.01" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Добавить</button>
+                        <span style="margin: 0 8px;"></span>
+                        <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

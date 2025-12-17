@@ -60,12 +60,12 @@ namespace DataGridView.Services
         /// <summary>
         /// Получает все продукты со склада
         /// </summary>
-        public async Task<IEnumerable<ProductModel>> GetAllProducts()
+        public async Task<IEnumerable<ProductModel>> GetAllProducts(CancellationToken cancellationToken)
         {
             var sw = Stopwatch.StartNew();
             try
             {
-                var allProducts = await storage.GetAllProducts();
+                var allProducts = await storage.GetAllProducts(cancellationToken);
                 return allProducts;
             }
             finally
@@ -83,7 +83,7 @@ namespace DataGridView.Services
             var sw = Stopwatch.StartNew();
             try
             {
-                var products = await storage.GetAllProducts();
+                var products = await storage.GetAllProducts(cancellationToken);
 
                 var totalProducts = products.Count();
                 var totalAmountWithoutVat = products.Sum(p => p.Price * p.Quantity);

@@ -12,7 +12,7 @@ namespace DataGridView.Services.Contracts
         /// <summary>
         /// Получить все товары
         /// </summary>
-        Task<IEnumerable<ProductModel>> GetAllProducts();
+        Task<IEnumerable<ProductModel>> GetAllProducts(CancellationToken cancellationToken);
 
         /// <summary>
         /// Добавить новый товар
