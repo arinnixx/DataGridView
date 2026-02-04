@@ -1,0 +1,157 @@
+﻿@using DataGridView.Entities.Models
+@using DataGridView.Web.Models
+
+@model IndexViewModel 
+
+@{
+    ViewData["Title"] = "Склад гвоздей";
+}
+
+<h2>Склад гвоздей</h2>
+
+<div style="margin-bottom: 10px;">
+    <a asp-action="Create" class="btn btn-outline-secondary">Добавить</a>
+    <span style="margin: 0 8px;"></span>
+    <a asp-action="Index" class="btn btn-outline-secondary">Обновить</a>
+</div>
+
+
+<div style="margin-top: 30px;">
+    @if (Model.Products != null && Model.Products.Any())
+    {
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Наименование</th>
+                            <th>Размер</th>
+                            <th>Материал</th>
+                            <th>Количество</th>
+                            <th>Мин. количество</th>
+                            <th>Цена (без НДС)</th>
+                            <th>Общая стоимость</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var product in Model.Products)
+                    {
+                        var totalPrice = product.Price * product.Quantity;
+
+                                <tr>
+                                    <td>@product.ProductName</td>
+                                    <td>@product.Size</td>
+                                    <td>@product.Material</td>
+                                    <td>@product.Quantity</td>
+                                    <td>@product.MinimumQuantity</td>
+                                    <td>@product.Price.ToString("C2")</td>
+                                    <td><strong>@totalPrice.ToString("C2")</strong></td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a asp-action="Edit" asp-route-id="@product.Id" 
+                                               class="btn btn-sm btn-outline-primary" 
+                                               title="Редактировать">
+                                                <i class="bi bi-pencil"></i> Редактировать
+                                            </a>
+                                                    <span style="margin: 0 8px;"></span>
+                                            <a asp-action="Delete" asp-route-id="@product.Id" 
+                                               class="btn btn-sm btn-outline-danger" 
+                                               title="Удалить">
+                                                <i class="bi bi-trash"></i> Удалить
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                    }
+                    </tbody>
+                @if (Model.Products.Any())
+                {
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6" class="text-end"><strong>Итого:</strong></td>
+                                    <td><strong>@Model.Products.Sum(p => p.Price * p.Quantity).ToString("C2")</strong></td>
+                                    <td colspan="2"></td>
+                                </tr>
+                            </tfoot>
+                }
+                </table>
+            </div>
+    }
+    else
+    {
+            <div class="alert alert-info" role="alert">
+                На складе нет товаров. Нажмите "Добавить", чтобы добавить первый товар.
+            </div>
+    }
+
+</<div>
+    <div style="margin-top: 30px;">
+
+        @if (Model.Statistics != null)
+        {
+            <div class="statistics-card" style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #dee2e6;">
+                <h4>Статистика склада</h4>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="stat-item">
+                            <span class="stat-label">Всего товаров:</span>
+                            <span class="stat-value">@Model.Statistics.TotalProducts</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-item">
+                            <span class="stat-label">Общая стоимость (без НДС):</span>
+                            <span class="stat-value">@Model.Statistics.TotalAmountWithoutVat.ToString("C2")</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-item">
+                            <span class="stat-label">Общая стоимость (с НДС):</span>
+                            <span class="stat-value">@Model.Statistics.TotalAmountWithVat.ToString("C2")</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        </div>
+
+<style>
+    .stat-item {
+        padding: 10px;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .stat-label {
+        display: block;
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+
+    .stat-value {
+        display: block;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #212529;
+    }
+
+    .badge {
+        font-size: 0.8em;
+        padding: 0.4em 0.8em;
+    }
+
+    .btn-group {
+        gap: 5px;
+    }
+
+    .table th {
+        background-color: #343a40;
+        color: white;
+        vertical-align: middle;
+    }
+
+    .table td {
+        vertical-align: middle;
+    }
+</style>

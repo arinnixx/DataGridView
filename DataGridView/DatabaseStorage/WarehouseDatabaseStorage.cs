@@ -22,10 +22,10 @@ namespace DatabaseStorage
         /// <summary>
         /// Возвращает все гвозди из базы данных
         /// </summary>
-        public async Task<IEnumerable<ProductModel>> GetAllProducts()
+        public async Task<IEnumerable<ProductModel>> GetAllProducts(CancellationToken cancellationToken)
         {
             using var database = new DatabaseContext();
-            var products = await database.Products.AsNoTracking().ToListAsync().ConfigureAwait(false);
+            var products = await database.Products.AsNoTracking().ToListAsync(cancellationToken);
             return products;
         }
 

@@ -79,40 +79,54 @@ namespace DataGridView.Service.Tests
             };
 
             storageMock
-                .Setup(s => s.GetAllProducts())
+                .Setup(s => s.GetAllProducts(CancellationToken.None))
                 .ReturnsAsync(products);
 
             // Act
-            var result = await service.GetAllProducts();
+            var result = await service.GetAllProducts(CancellationToken.None);
 
             // Assert
             result.Should().BeSameAs(products);
         }
 
         /// <summary>
-        /// Проверяет, что сервис возвращает статистику, предоставленную хранилищем.
+        /// Проверяет, что сервис корректно вычисляет статистику на основе данных из хранилища.
         /// </summary>
         [Fact]
-        public async Task GetStatisticsShouldReturnDataFromStorage()
+        public async Task GetStatisticsShouldCalculateCorrectly()
         {
             // Arrange
             var vatRate = WarehouseConstants.VatRate;
-            var expectedStatistics = new Statistics
+            var products = new List<ProductModel>
             {
-                TotalProducts = 3,
-                TotalAmountWithoutVat = 7835m,
-                TotalAmountWithVat = 7835m * vatRate
+                new ProductModel { Price = 100m, Quantity = 2 },
+                new ProductModel { Price = 200m, Quantity = 3 },
+                new ProductModel { Price = 300m, Quantity = 1 }
             };
 
             storageMock
-                .Setup(s => s.GetStatistics(vatRate, CancellationToken.None))
-                .ReturnsAsync(expectedStatistics);
+                .Setup(s => s.GetAllProducts(CancellationToken.None))
+                .ReturnsAsync(products);
+
+
+
+            var expectedStatistics = new Statistics
+            {
+                TotalProducts = 3,
+                TotalAmountWithoutVat = 1100m,
+                TotalAmountWithVat = 1320m
+            };
 
             // Act
             var result = await service.GetStatistics(vatRate, CancellationToken.None);
 
             // Assert
-            result.Should().BeSameAs(expectedStatistics);
+            result.Should().NotBeNull();
+            result.TotalProducts.Should().Be(expectedStatistics.TotalProducts);
+            result.TotalAmountWithoutVat.Should().Be(expectedStatistics.TotalAmountWithoutVat);
+            result.TotalAmountWithVat.Should().Be(expectedStatistics.TotalAmountWithVat);
+
+            storageMock.Verify(s => s.GetAllProducts(CancellationToken.None), Times.Once);
         }
 
         /// <summary>
